@@ -1,18 +1,20 @@
 import mysql.connector
-from yamlconfig import config
+from config.yamlconfig import ConfigLoader
 
 class DatabaseManager:
     def __init__(self):
         self.conn = None
         self.cursor = None
-
+        self.config = ConfigLoader("./application.yaml").get_config()
+        ##self.config_data = self.config.get_config()
     def connect(self):
+        print(self.config)
         try:
             self.conn = mysql.connector.connect(
-                host=config['database']['host'],
-                user=config['database']['user'],
-                password=config['database']['password'],
-                database=config['database']['database']
+                host=self.config['database']['host'],
+                user=self.config['database']['user'],
+                password=self.config['database']['password'],
+                database=self.config['database']['database']
             )
             self.cursor = self.conn.cursor()
             print("Connected to MySQL!")

@@ -45,4 +45,5 @@ class UserQuery:
 
     def close(self):
         if self.conn:
+            self.conn = None
       
