@@ -4,3 +4,7 @@ database:
   user: root
   password: ''
   database: desimart
+
+
+application:
+  name: "Desimart"
