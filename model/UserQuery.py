@@ -7,7 +7,7 @@ class UserQuery:
         self.cursor = None
 
     def get_user_by_id(self, user_id):
-        db.DatabaseManager.connect();
+        db.DatabaseManager.connect()
         if not self.conn:
             print("Not connected to MySQL!")
             return None
