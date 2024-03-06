@@ -2,10 +2,11 @@ import tkinter as tk
 import logging
 from tkinter import messagebox
 
+logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',format='%(name)s - %(levelname)s - %(message)s')
 
 class LoginScreen(tk.Toplevel):
-    def __init__(self, parent,logging):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
         self.title("Desimart")
         log = logging.getLogger(self.__class__.__name__)
         log.info("Opened Login Screen")

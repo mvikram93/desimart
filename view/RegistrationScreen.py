@@ -1,18 +1,17 @@
 import tkinter as tk
 import logging
-from tkinter import messagebox
 from controller.RegistrationController import RegistrationController as Register
-
+from model.UserModel import User
 logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',format='%(name)s - %(levelname)s - %(message)s')
 
 class RegistrationScreen(tk.Toplevel):
-    def __init__(self,parent, logging):
-        super().__init__(parent)
-        #self.root = root
+    def __init__(self):
+        super().__init__()
+        self.deiconify()
         log = logging.getLogger(self.__class__.__name__)
         log.info("Opened Registration Screen")
         self.title("Registration Screen")
-
+        self.user = User()
         self.registration_frame = tk.Frame(self)
         self.registration_frame.pack()
 
@@ -56,11 +55,12 @@ class RegistrationScreen(tk.Toplevel):
         self.submit_button.pack()
         
     def submit_form(self):
-        firstname = self.firstname_entry.get()
-        lastname = self.lastname_entry.get()
-        email = self.email_entry.get()
-        phone = self.phone_entry.get()
-        address = self.address_entry.get()
-        state = self.state_entry.get()
-        Register.register_user_details(firstname,lastname,email,phone,address,state)
+        register = Register()
+        self.user.firstname = self.firstname_entry.get()
+        self.user.lastname = self.lastname_entry.get()
+        self.user.email = self.email_entry.get()
+        self.user.phone = self.phone_entry.get()
+        self.user.address = self.address_entry.get()
+        self.user.state = self.state_entry.get()
+        register.register_user_details(self.user)
 

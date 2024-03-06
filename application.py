@@ -42,10 +42,11 @@ class Application(tk.Tk):
         print("Clearing...")
         
     def open_registration_screen(self):
-       self.reg = Registration(self,logging)
+        self.withdraw()
+        self.reg = Registration()
 
     def open_new_screen(self):
-        self.login = Login(self,logging)
+        self.login = Login()
 
 # Create the application instance
 app = Application()
