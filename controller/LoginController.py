@@ -33,8 +33,8 @@ class LoginController:
             return
         logged_In_User = user_query.get_user(user)
         if not logged_In_User:
-            self.log.error("Invalid Email ID. Please provide a Valid")
-            Exception.raise_Exception("Invalid Email ID. Please")
+            self.log.error("User does not exists. Please provide a Valid One")
+            Exception.raise_Exception("User does not exists. Please provide a Valid One")
             return
         user.email = logged_In_User[1]
         user.firstname =  logged_In_User[2]
