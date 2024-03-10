@@ -22,8 +22,14 @@ class UserQuery:
             user.zipcode))
 
     def get_user(self, user):
-        query = "SELECT user_id,email_id,first_name,last_name,password from desimart.tbl_user where email_id=%s and password=%s"
+        query = ("SELECT user_id,email_id,first_name,last_name,password from desimart.tbl_user where email_id=%s and "
+                 "password=%s")
         return self.db_manager.execute_query(query, (user.email, user.password))
+
+    def update_user(self, user):
+        query = "update tbl_user SET password = %s WHERE email_id =%s"
+        return self.db_manager.execute_query(query, (user.password,user.email))
+
 
     def close(self):
         if self.db_manager:

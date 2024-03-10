@@ -40,6 +40,17 @@ class LoginController:
         user.firstname =  logged_In_User[2]
         user.lastname = logged_In_User[3]
         user.password = logged_In_User[4]
-        print(logged_In_User)
-        messagebox.showinfo("Logged In User Details",
-                            f"First Name: {user.firstname}\nLast Name: {user.lastname}\nEmail ID: {user.email}\nPassword: {user.password}")
+        self.log.info(logged_In_User)
+        #messagebox.showinfo("Logged In User Details",
+        #                    f"First Name: {user.firstname}\nLast Name: {user.lastname}\nEmail ID: {user.email}\n"
+        #                    f"Password: {user.password}")
+
+    def changePassword(self, user):
+        user_query = UserQuery()
+        if not (user.email and user.password):
+            Exception.raise_Exception("Please check all the details. Something is Missing")
+            return
+        elif not Email.validate_email(user.email):
+            Exception.raise_Exception("Invalid Email ID. Please provide a Valid One")
+        user_query.update_user(user)
+

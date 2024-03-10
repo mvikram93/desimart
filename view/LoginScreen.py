@@ -1,6 +1,8 @@
 import tkinter as tk
 import logging
 from controller.LoginController import LoginController as Login
+from view.ChangePasswordScreen import ChangePasswordScreen
+
 from model.UserModel import User
 
 logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',
@@ -38,3 +40,7 @@ class LoginScreen(tk.Toplevel):
         self.user.email = self.email_entry.get()
         self.user.password = self.password_entry.get()
         login.ValidateUser(self.user)
+        if self.user.password == "PASSINIT":
+            self.withdraw()
+            changePassword = ChangePasswordScreen(self.user)
+            #changePassword.change_password()
