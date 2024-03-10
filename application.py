@@ -1,6 +1,6 @@
 import tkinter as tk
-from view.LoginScreen import LoginScreen as Login
-from view.RegistrationScreen import RegistrationScreen as Registration
+from view.LoginScreen import LoginScreen
+from view.RegistrationScreen import RegistrationScreen
 import logging 
 
 logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',format='%(name)s - %(levelname)s - %(message)s')
@@ -25,7 +25,7 @@ class Application(tk.Tk):
         self.greet_button = tk.Button(self.top_frame, text="Registartion", command=self.open_registration_screen)
         self.greet_button.pack(side=tk.LEFT)
 
-        self.new_screen_button = tk.Button(self.top_frame, text="Open New Screen", command=self.open_new_screen)
+        self.new_screen_button = tk.Button(self.top_frame, text="Login", command=self.open_login)
         self.new_screen_button.pack(side=tk.LEFT)
 
         self.clear_button = tk.Button(self.top_frame, text="Clear", command=self.clear)
@@ -43,10 +43,11 @@ class Application(tk.Tk):
         
     def open_registration_screen(self):
         self.withdraw()
-        self.reg = Registration()
+        self.reg = RegistrationScreen()
 
-    def open_new_screen(self):
-        self.login = Login()
+    def open_login(self):
+        self.withdraw()
+        self.login = LoginScreen()
 
 # Create the application instance
 app = Application()

@@ -1,43 +1,40 @@
 import tkinter as tk
 import logging
-from tkinter import messagebox
+from controller.LoginController import LoginController as Login
+from model.UserModel import User
 
-logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',
+                    format='%(name)s - %(levelname)s - %(message)s')
+
 
 class LoginScreen(tk.Toplevel):
     def __init__(self):
         super().__init__()
-        self.title("Desimart")
+        self.deiconify()
         log = logging.getLogger(self.__class__.__name__)
         log.info("Opened Login Screen")
-        #self.login_frame = tk.Frame(self)
-        # Place the inner frame at the center of the outer frame
-        #self.login_frame.pack(fill=tk.BOTH, expand=True)
+        self.title("Login Screen")
+        self.user = User()
+        self.login_frame = tk.Frame(self)
+        self.login_frame.pack()
 
-        self.loginFrame = tk.Frame(self)
-        self.loginFrame.pack(fill=tk.BOTH, expand=True)
+        self.email_label = tk.Label(self.login_frame, text="E-Mail:")
+        self.email_label.pack()
 
-        # Username Label and Text Entry Box within the frame
-        self.usernameLabel = tk.Label(self.loginFrame, text="Username")
-        self.usernameLabel.place(relx=0.2, rely=0.3)
-        self.usernameEntry = tk.Entry(self.loginFrame)
-        self.usernameEntry.place(relx=0.5, rely=0.3)
+        self.email_entry = tk.Entry(self.login_frame)
+        self.email_entry.pack()
 
-        # Password Label and Password Entry Box within the frame
-        self.passwordLabel = tk.Label(self.loginFrame, text="Password")
-        self.passwordLabel.place(relx=0.2, rely=0.5)
-        self.passwordEntry = tk.Entry(self.loginFrame, show="*")
-        self.passwordEntry.place(relx=0.5, rely=0.5)
+        self.password_label = tk.Label(self.login_frame, text="Password:")
+        self.password_label.pack()
 
-        # Login Button within the frame
-        self.loginButton = tk.Button(self.loginFrame, text="Login", command=self.login)
-        self.loginButton.place(relx=0.5, rely=0.7, anchor='center')
+        self.password_entry = tk.Entry(self.login_frame)
+        self.password_entry.pack()
 
-        
-    def login(self):
-        # Implement the login functionality here
-        # For demonstration, we'll just show a message box
-        username = self.usernameEntry.get()
-        password = self.passwordEntry.get()
-        messagebox.showinfo("Login Info", f"You entered Username: {username} and Password: {password}")
+        self.submit_button = tk.Button(self.login_frame, text="Submit", command=self.submit_form)
+        self.submit_button.pack()
 
+    def submit_form(self):
+        login = Login()
+        self.user.email = self.email_entry.get()
+        self.user.password = self.password_entry.get()
+        login.ValidateUser(self.user)
