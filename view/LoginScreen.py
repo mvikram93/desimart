@@ -31,7 +31,7 @@ class LoginScreen(tk.Toplevel):
         self.login_frame = tk.Frame(self, width=350,height=350,bg='white')
         self.login_frame.place(x=480,y=100)
 
-        self.header_label=tk.Label(self.login_frame, text="Sign in",bg='white',font=("Microsoft YaHei UI Light", 23, "bold"),fg='#57a1f8')
+        self.header_label=tk.Label(self.login_frame, text="Sign in",bg='white',font=("Microsoft YaHei UI Light", 23, "bold"),fg='DodgerBlue4')
         self.header_label.place(x=100, y=5)
 
         # self.email_label = tk.Label(self, text="E-Mail:",bg='slate gray',font=8,fg='Black')
@@ -65,14 +65,14 @@ class LoginScreen(tk.Toplevel):
 
         # sign in button
     
-        self.signin_button = tk.Button(self.login_frame, text='Sign in', command=self.submit_form, width=39,pady=7,bg='#57a1f8',fg='white',border=0)
+        self.signin_button = tk.Button(self.login_frame, text='Sign in', command=self.submit_form, width=39,pady=7,bg='DodgerBlue4',fg='white',border=0)
         self.signin_button.place(x=35, y=204)
 
         #creating signup button
         self.label=tk.Label(self.login_frame,text="Don't have an account?",fg='black',bg='white',font=("Microsoft YaHei UI Light", 9))
         self.label.place(x=75,y=270)
 
-        self.greet_button = tk.Button(self.login_frame, text='Sign up', command=self.open_registration_screen,border=0,bg='white',cursor='hand2',fg='#57a1f8')
+        self.greet_button = tk.Button(self.login_frame, text='Sign up', command=self.open_registration_screen,border=0,bg='white',cursor='hand2',fg='DodgerBlue4')
         self.greet_button.place(x=215,y=270)
 
         # # Add a exit button
