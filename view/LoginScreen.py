@@ -37,23 +37,43 @@ class LoginScreen(tk.Toplevel):
         # self.email_label = tk.Label(self, text="E-Mail:",bg='slate gray',font=8,fg='Black')
         # self.email_label.place(relx=0.2, rely=0.3)
 
-        # self.email_entry = tk.Entry(self,font=8,fg='Black')
-        # self.email_entry.place(relx=0.4, rely=0.3)
+
+        self.email_entry = tk.Entry(self.login_frame,width=25,fg='black',border=0,bg="white",font=("Microsoft YaHei UI Light", 11))
+        self.email_entry.place(x=30, y=80)
+        self.email_entry.insert(0,'Email')
+
+        self.email_entry.bind('<FocusIn>', self.on_enter)
+        self.email_entry.bind('<FocusOut>', self.on_leave)
+
+        self.frame1=tk.Frame(self.login_frame,width=295,height=2,bg='black')
+        self.frame1.place(x=25,y=107)
 
         # self.password_label = tk.Label(self, text="Password:",bg='slate gray',font=8,fg='Black')
         # self.password_label.place(relx=0.15, rely=0.4)
 
-        # self.password_entry = tk.Entry(self, font=8,fg='Black',show='*')
-        # self.password_entry.place(relx=0.4, rely=0.4)
+        self.password_entry = tk.Entry(self.login_frame,width=25,fg='black',border=0,bg="white",font=("Microsoft YaHei UI Light", 11))
+        self.password_entry.place(x=30, y=150)
+        self.password_entry.insert(0,'Password')
 
-        # #using submit image as button
-        # #test
-        # self.submit_button = tk.Button(self, text='Submit', command=self.submit_form, bg='slate gray', bd=0)
-        # self.submit_button.place(relx=0.7, rely=0.5)
+        # Bind events for password entry
+        self.password_entry.bind('<FocusIn>', self.on_enter_password)
+        self.password_entry.bind('<FocusOut>', self.on_leave_password)
 
-        # # creating register button
-        # self.greet_button = tk.Button(self, text='Register', command=self.open_registration_screen,bg='slate gray',bd=0)
-        # self.greet_button.place(relx=0.2,rely=0.5)
+
+        self.frame2=tk.Frame(self.login_frame,width=295,height=2,bg='black')
+        self.frame2.place(x=25,y=177)
+
+        # sign in button
+    
+        self.signin_button = tk.Button(self.login_frame, text='Sign in', command=self.submit_form, width=39,pady=7,bg='#57a1f8',fg='white',border=0)
+        self.signin_button.place(x=35, y=204)
+
+        #creating signup button
+        self.label=tk.Label(self.login_frame,text="Don't have an account?",fg='black',bg='white',font=("Microsoft YaHei UI Light", 9))
+        self.label.place(x=75,y=270)
+
+        self.greet_button = tk.Button(self.login_frame, text='Sign up', command=self.open_registration_screen,border=0,bg='white',cursor='hand2',fg='#57a1f8')
+        self.greet_button.place(x=215,y=270)
 
         # # Add a exit button
 
@@ -73,6 +93,22 @@ class LoginScreen(tk.Toplevel):
     def open_registration_screen(self):
         self.withdraw()
         self.reg = RegistrationScreen()
+
+    def on_enter(self,event):
+        self.email_entry.delete(0,'end')
+
+    def on_leave(self,event):
+        name=self.email_entry.get()
+        if name=='':
+            self.email_entry.insert(0,'Email')
+    def on_enter_password(self, event):
+        self.password_entry.delete(0, 'end')
+        self.password_entry.config(show='*')  # Show asterisks for password
+
+    def on_leave_password(self, event):
+        password = self.password_entry.get()
+        if password == '':
+            self.password_entry.insert(0, 'Password')
+            self.password_entry.config(show='')  # Show plain text for placeholder
+
    
-
-
