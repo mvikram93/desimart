@@ -22,10 +22,13 @@ class LoginScreen(tk.Toplevel):
         self.iconbitmap("resources/user1.ico")
         self.configure(bg='white')
         #sets the overall size of the main window
-        self.geometry("900x500+300+200")
-        #self.resizable(False,False)
-        self.img=PhotoImage(file='resources\shopping.png').subsample(1,1)
-        self.bg_img=tk.Label(self,image=self.img,bg="white").place(x=50,y=50)
+        self.geometry("890x500+300+200")
+        self.resizable(False,False)
+        self.img=PhotoImage(file='resources\desi1.png')
+        self.bg_img=tk.Label(self,image=self.img,bg="white").place(x=15,y=5)
+        self.img1=PhotoImage(file='resources\desimart_logo.png')
+        self.bg_img=tk.Label(self,image=self.img1,bg="white").place(x=40,y=90)
+
     
         self.user = User()
         self.login_frame = tk.Frame(self, width=350,height=350,bg='white')
