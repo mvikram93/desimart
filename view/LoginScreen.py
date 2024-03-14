@@ -21,6 +21,7 @@ class LoginScreen(tk.Toplevel):
         #changing the icon of the window
         self.iconbitmap("resources/user1.ico")
         self.configure(bg='white')
+        
         #sets the overall size of the main window
         self.geometry("890x500+300+200")
         self.resizable(False,False)
@@ -95,7 +96,7 @@ class LoginScreen(tk.Toplevel):
 
     def open_registration_screen(self):
         self.withdraw()
-        self.reg = RegistrationScreen()
+        self.reg = RegistrationScreen(self)
 
     def on_enter(self,event):
         self.email_entry.delete(0,'end')

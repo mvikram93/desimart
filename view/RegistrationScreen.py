@@ -3,19 +3,23 @@ from tkinter import *
 import logging
 from controller.RegistrationController import RegistrationController as Register
 from model.UserModel import User
+from query.UserQuery import UserQuery
+from tkinter import messagebox
 
 logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',
                     format='%(name)s - %(levelname)s - %(message)s')
 
 
 class RegistrationScreen(tk.Toplevel):
-    def __init__(self):
+    def __init__(self,login_screen_ref):
         super().__init__()
         self.deiconify()
         log = logging.getLogger(self.__class__.__name__)
         log.info("Opened Registration Screen")
         self.title("Registration Screen")
         self.configure(bg='white')
+        self.user_query = UserQuery()
+        
         #sets the overall size of the main window
         self.geometry("890x500+300+200")
         self.resizable(False,False)
@@ -77,8 +81,23 @@ class RegistrationScreen(tk.Toplevel):
         self.address_zipcode_entry = tk.Entry(self.registration_frame,border='1',width=25,bg='ghost white',font=("Microsoft YaHei UI Light", 9),fg='black')
         self.address_zipcode_entry.place(x=250,y=255)
 
-        self.submit_button = tk.Button(self.registration_frame, text="Submit", command=self.submit_form,width=25,pady=5,bg='DodgerBlue4',fg='white',border=0)
-        self.submit_button.place(x=125,y=300)
+        self.submit_button = tk.Button(self.registration_frame, text="Submit", command=self.submit_form,width=12,pady=5,bg='DodgerBlue4',fg='white',border=0)
+        self.submit_button.place(x=60,y=300)
+
+        # Adding back button
+        self.back_button = tk.Button(self.registration_frame, text="Back", command=self.open_login_screen,width=12,pady=5,bg='DodgerBlue4',fg='white',border=0)
+        self.back_button.place(x=180,y=300)
+        self.login_screen_ref = login_screen_ref
+
+        # Add a Exit button to the bottom frame
+        self.quit_button = tk.Button(self.registration_frame, text="Exit", command=self.destroy,width=12,pady=5,bg='DodgerBlue4',fg='white',border=0)
+        self.quit_button.place(x=300,y=300)
+
+    def open_login_screen(self):
+        self.withdraw()
+        #to restore the window to its normal state
+        self.login_screen_ref.deiconify()
+
 
     def submit_form(self):
         register = Register()
@@ -90,4 +109,11 @@ class RegistrationScreen(tk.Toplevel):
         self.user.address = self.address_entry.get()
         self.user.state = self.state_entry.get()
         self.user.zipcode = self.address_zipcode_entry.get()
-        register.register_user_details(self.user)
+        # register.register_user_details(self.user)
+        
+        if self.user_query.check_email_exists(self.user.email):
+            messagebox.showinfo("Email already registered", "Email already registered! Please sign in or create a new account.")
+        else:
+            register.register_user_details(self.user)
+            messagebox.showinfo("Account successfully created", f"Login with your email: {self.user.email}\nand password: PASSINIT")
+
