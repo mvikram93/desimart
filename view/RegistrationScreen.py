@@ -23,12 +23,14 @@ class RegistrationScreen(tk.Toplevel):
         #sets the overall size of the main window
         self.geometry("890x500+300+200")
         self.resizable(False,False)
+        self.img=PhotoImage(file='resources\desi1.png')
+        self.bg_img=tk.Label(self,image=self.img,bg="white").place(x=15,y=0)
         self.image=PhotoImage(file='resources/desimart.png').subsample(1,1)
-        self.bg_image=tk.Label(self,image=self.image,bg="white").place(x=40,y=40)
+        self.bg_image=tk.Label(self,image=self.image,bg="white").place(x=40,y=90)
 
         self.user = User()
         self.registration_frame = tk.Frame(self, width=500,height=380,bg='white')
-        self.registration_frame.place(x=450,y=50)
+        self.registration_frame.place(x=400,y=100)
 
         self.header_label=tk.Label(self.registration_frame, text="Sign up",bg='white',font=("Microsoft YaHei UI Light", 23, "bold"),fg='DodgerBlue4')
         self.header_label.place(x=150, y=5)
@@ -114,6 +116,7 @@ class RegistrationScreen(tk.Toplevel):
         if self.user_query.check_email_exists(self.user.email):
             messagebox.showinfo("Email already registered", "Email already registered! Please sign in or create a new account.")
         else:
-            register.register_user_details(self.user)
-            messagebox.showinfo("Account successfully created", f"Login with your email: {self.user.email}\nand password: PASSINIT")
+            register_user_status=register.register_user_details(self.user)
+            if register_user_status:
+                messagebox.showinfo("Account successfully created", f"Login with your email: {self.user.email}\nand password: PASSINIT")
 

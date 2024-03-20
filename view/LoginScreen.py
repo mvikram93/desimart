@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 import logging
+from tkinter import messagebox
 from controller.LoginController import LoginController as Login
 from view.ChangePasswordScreen import ChangePasswordScreen
 from view.RegistrationScreen import RegistrationScreen

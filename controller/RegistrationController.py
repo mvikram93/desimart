@@ -27,11 +27,13 @@ class RegistrationController:
         if not (user.firstname and user.lastname and user.email and user.phone and user.address and user.state):
             self.log.error("Please check all the details. Something is Missing")
             Exception.raise_Exception("Please check all the details. Something is Missing")
-            return
+            return False
         elif not Email.validate_email(user.email):
             self.log.error("Invalid Email ID. Please provide a Valid One")
             Exception.raise_Exception("Invalid Email ID. Please provide a Valid One")
-            return
+            return False
         user_query.add_user(user)
+
+        return True
 
        # messagebox.showinfo("LoggedIn Details", f"First Name: {user.firstname}\nLast Name: {user.lastname}\nEmail ID: {user.email}\nPhone Number: {user.phone}\nAddress: {user.address}\nState: {user.state}")

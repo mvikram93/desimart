@@ -39,7 +39,6 @@ class UserQuery:
         query = "update tbl_user SET password = %s WHERE email_id =%s"
         return self.db_manager.execute_query(query, (user.password,user.email))
 
-
     def close(self):
         if self.db_manager:
             self.db_manager.close()
