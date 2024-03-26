@@ -1,8 +1,6 @@
 import re
 import logging
 import smtplib
-from email import encoders
-from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -30,29 +28,23 @@ class EmailService:
         else:
             return False
 
-    def send_Email(toEmail_ID, qr_file_name, trip_id):
-        fromaddr = ""
+    # Function to Send Email
+    def send_Email(toEmail_ID,emailSubject,emailMessageBody):
+        fromAddr = "mvikram.fipply@gmail.com"
         try:
             msg = MIMEMultipart()
-            msg['From'] = fromaddr
+            msg['From'] = fromAddr
             msg['To'] = toEmail_ID
-            msg['Subject'] = f"Elite Parking Booking - Trip ID : {trip_id}"
-            body = f"Elite Parking Booking - Trip ID : {trip_id}"
+            msg['Subject'] = emailSubject
+            body = emailMessageBody
             print(f"Email - {msg['To']}")
             msg.attach(MIMEText(body, 'plain'))
-            filename = f"data/{qr_file_name}.png"
-            attachment = open(filename, "rb")
-            p = MIMEBase('application', 'octet-stream')
-            p.set_payload((attachment).read())
-            encoders.encode_base64(p)
-            p.add_header('Content-Disposition', f"attachment; filename= {qr_file_name}.png")
-            msg.attach(p)
-            s = smtplib.SMTP('smtp.gmail.com', 587)
-            s.starttls()
-            s.login(fromaddr, "ppkkfjntahoxwumm")
+            smtp_obj = smtplib.SMTP('smtp.gmail.com', 587)
+            smtp_obj.starttls()
+            smtp_obj.login(fromAddr, "nsvkqkqjsyinxjnl ")
             text = msg.as_string()
-            s.sendmail(fromaddr, toEmail_ID, text)
-            s.quit()
+            smtp_obj.sendmail(fromAddr, toEmail_ID, text)
+            smtp_obj.quit()
             return 0
         except:
             raise Exception("Cannot send the email")

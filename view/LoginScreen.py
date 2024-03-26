@@ -1,27 +1,28 @@
 import tkinter as tk
 from tkinter import *
 import logging
-from tkinter import messagebox
 from controller.LoginController import LoginController as Login
 from view.ChangePasswordScreen import ChangePasswordScreen
 from view.RegistrationScreen import RegistrationScreen
-
-
+from service.EmailService import EmailService
+from messagestemplate.EmailMessagesTemplate import EmailMessagesTemplate
 from model.UserModel import User
+from service.OTPGeneratorService import OTPGeneratorService
 
 logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',
                     format='%(name)s - %(levelname)s - %(message)s')
 
-class LoginScreen(tk.Toplevel):
+class LoginScreen(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.deiconify()
+        #self.deiconify()
         log = logging.getLogger(self.__class__.__name__)
         log.info("Opened Login Screen")
         self.title("Login Screen")
         #changing the icon of the window
         self.iconbitmap("resources/user1.ico")
         self.configure(bg='white')
+        self.otpGenerator = OTPGeneratorService()
         
         #sets the overall size of the main window
         self.geometry("890x500+300+200")
@@ -91,6 +92,7 @@ class LoginScreen(tk.Toplevel):
         self.user.password = self.password_entry.get()
         login.ValidateUser(self.user)
         if self.user.password == "PASSINIT":
+            EmailService.send_Email(self.user.email,"One-Time Email Verification Code",EmailMessagesTemplate.getEmailMessagesTemplateForLogin().format("verification_code",self.otpGenerator.generateOTP()))
             self.withdraw()
             changePassword = ChangePasswordScreen(self.user)
             #changePassword.change_password()
