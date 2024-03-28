@@ -1,0 +1,3 @@
+class EmailMessagesTemplate:
+    def getEmailMessagesTemplateForLogin(self):
+        return """Dear [Name],\nThank you for choosing Desimart. In order to complete your registration/account setup, we require verification through a one-time email verification code.\n\nYour unique verification code is: [verification_code] \n \nPlease use this code to verify your email address and complete the registration process. This code is valid for a limited time for security purposes. If you did not initiate this request, please disregard this email.\n\nThank you for choosing Desimart. If you have any questions or require further assistance, please feel free to contact our support team."""
