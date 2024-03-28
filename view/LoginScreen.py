@@ -92,8 +92,9 @@ class LoginScreen(tk.Toplevel):
         login.ValidateUser(self.user)
         if self.user.password == "PASSINIT":
             self.withdraw()
-            changePassword = ChangePasswordScreen(self.user)
-            #changePassword.change_password()
+            ChangePasswordScreen(self.user,self)
+            return
+            
 
     def open_registration_screen(self):
         self.withdraw()
