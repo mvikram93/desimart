@@ -88,16 +88,18 @@ class LoginScreen(tk.Tk):
         login = Login()
         self.user.email = self.email_entry.get()
         self.user.password = self.password_entry.get()
-        login.ValidateUser(self.user)
-        if self.user.password == "PASSINIT":
-            # EmailService.send_Email(self.user.email,"One-Time Email Verification Code",EmailMessagesTemplate.getEmailMessagesTemplateForLogin().format("verification_code",self.otpGenerator.generateOTP()))
-            self.withdraw()
-            ChangePasswordScreen(self.user,self)
-            return
-        
+        loggedIn = login.ValidateUser(self.user)
+        if loggedIn == 1:
+            if self.user.password == "PASSINIT":
+                # EmailService.send_Email(self.user.email,"One-Time Email Verification Code",EmailMessagesTemplate.getEmailMessagesTemplateForLogin().format("verification_code",self.otpGenerator.generateOTP()))
+                self.withdraw()
+                ChangePasswordScreen(self.user,self)
+                return
+            else:
+                self.withdraw()
+                category_screen = CategoryScreen()
         else:
-            self.withdraw()
-            category_screen = CategoryScreen()
+            return
    
             
     def open_registration_screen(self):
@@ -108,7 +110,7 @@ class LoginScreen(tk.Tk):
         self.email_entry.delete(0,'end')
 
     def on_leave(self,event):
-        name=self.email_entry.get()
+        name = self.email_entry.get()
         if name=='':
             self.email_entry.insert(0,'Email')
     def on_enter_password(self, event):

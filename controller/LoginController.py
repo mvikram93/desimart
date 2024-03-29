@@ -26,21 +26,23 @@ class LoginController:
         if not (user.email and user.password):
             self.log.error("Please check all the details. Something is Missing")
             Exception.raise_Exception("Please check all the details. Something is Missing")
-            return
+            return 0
         elif not Email.validate_email(user.email):
             self.log.error("Invalid Email ID. Please provide a Valid One")
             Exception.raise_Exception("Invalid Email ID. Please provide a Valid One")
-            return
+            return 0
         logged_In_User = user_query.get_user(user)
-        if not logged_In_User:
+        print(logged_In_User)
+        if len(logged_In_User)==0:
             self.log.error("User does not exists. Please provide a Valid One")
             Exception.raise_Exception("User does not exists. Please provide a Valid One")
-            return
+            return 0
         user.email = logged_In_User[1]
-        user.firstname =  logged_In_User[2]
+        user.firstname =logged_In_User[2]
         user.lastname = logged_In_User[3]
         user.password = logged_In_User[4]
         self.log.info(logged_In_User)
+        return 1
         #messagebox.showinfo("Logged In User Details",
         #                    f"First Name: {user.firstname}\nLast Name: {user.lastname}\nEmail ID: {user.email}\n"
         #                    f"Password: {user.password}")
