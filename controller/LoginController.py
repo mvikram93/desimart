@@ -33,7 +33,7 @@ class LoginController:
             return 0
         logged_In_User = user_query.get_user(user)
         print(logged_In_User)
-        if len(logged_In_User)==0:
+        if logged_In_User is None:
             self.log.error("User does not exists. Please provide a Valid One")
             Exception.raise_Exception("User does not exists. Please provide a Valid One")
             return 0
