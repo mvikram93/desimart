@@ -7,7 +7,8 @@ from view.RegistrationScreen import RegistrationScreen
 from service.EmailService import EmailService
 from messagestemplate.EmailMessagesTemplate import EmailMessagesTemplate
 from model.UserModel import User
-from service.OTPGeneratorService import OTPGeneratorService
+from view.CategoriesScreen import CategoryScreen
+# from service.OTPGeneratorService import OTPGeneratorService
 
 logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',
                     format='%(name)s - %(levelname)s - %(message)s')
@@ -22,7 +23,7 @@ class LoginScreen(tk.Tk):
         #changing the icon of the window
         self.iconbitmap("resources/user1.ico")
         self.configure(bg='white')
-        self.otpGenerator = OTPGeneratorService()
+        # self.otpGenerator = OTPGeneratorService()
         
         #sets the overall size of the main window
         self.geometry("890x500+300+200")
@@ -53,9 +54,6 @@ class LoginScreen(tk.Tk):
 
         self.frame1=tk.Frame(self.login_frame,width=295,height=2,bg='black')
         self.frame1.place(x=25,y=107)
-
-        # self.password_label = tk.Label(self, text="Password:",bg='slate gray',font=8,fg='Black')
-        # self.password_label.place(relx=0.15, rely=0.4)
 
         self.password_entry = tk.Entry(self.login_frame,width=25,fg='black',border=0,bg="white",font=("Microsoft YaHei UI Light", 11))
         self.password_entry.place(x=30, y=150)
@@ -92,12 +90,16 @@ class LoginScreen(tk.Tk):
         self.user.password = self.password_entry.get()
         login.ValidateUser(self.user)
         if self.user.password == "PASSINIT":
-            EmailService.send_Email(self.user.email,"One-Time Email Verification Code",EmailMessagesTemplate.getEmailMessagesTemplateForLogin().format("verification_code",self.otpGenerator.generateOTP()))
+            # EmailService.send_Email(self.user.email,"One-Time Email Verification Code",EmailMessagesTemplate.getEmailMessagesTemplateForLogin().format("verification_code",self.otpGenerator.generateOTP()))
             self.withdraw()
             ChangePasswordScreen(self.user,self)
             return
+        
+        else:
+            self.withdraw()
+            category_screen = CategoryScreen()
+   
             
-
     def open_registration_screen(self):
         self.withdraw()
         self.reg = RegistrationScreen(self)

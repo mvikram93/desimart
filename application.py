@@ -8,7 +8,6 @@ logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',
 
 
 
-
 # Create the application instance
 app = LoginScreen()
 
