@@ -5,11 +5,12 @@ from config.DatabaseManager import DatabaseManager
 from model.CartModel import cart
 from view.CartScreen import CartScreen
 from tkinter import messagebox
+from config.CartManager import CartManager
 
 class ProductsScreen(tk.Toplevel):
     def __init__(self, category_id):
         super().__init__()
-        self.cart_item = None
+        self.cart_manager = CartManager()
         self.title("Products Screen")
         self.geometry("890x500+300+200")
         self.resizable(False, False)
@@ -68,18 +69,16 @@ class ProductsScreen(tk.Toplevel):
             self.db_manager.close()  # Close the database connection
 
     def add_to_cart(self, product_id, product_name, price, category_id, qty):
-            cart_item = cart(productname=product_name, productID=product_id, price=price, categoryID=category_id, qty=qty)
-            if self.cart_item:  # If cart_item already exists, append new item to it
-                self.cart_item.append(cart_item)
-            else:
-                self.cart_item = [cart_item]  # If cart_item doesn't exist, create a new list with the item
+        cart_item = cart(productname=product_name, productID=product_id, price=price, categoryID=category_id, qty=qty)
+        self.cart_manager.add_to_cart(cart_item)
             
-            print(f"Added product {product_name} with ID {product_id} to cart with quantity {qty} and price {price}.")
-
+        print(f"Added product {product_name} with ID {product_id} to cart with quantity {qty} and price {price}.")
+    
     def go_to_cart(self):
-        if self.cart_item:  # Check if cart_item exists
+        cart_items = self.cart_manager.get_cart_items()
+        if cart_items:  # Check if cart is not empty
             self.withdraw()
-            cart_window = CartScreen(cart_items=self.cart_item)  # Pass the cart items to CartScreen
+            cart_window = CartScreen(cart_items=cart_items)
 
     def back_to_Categories_screen(self):
         self.withdraw()
