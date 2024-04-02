@@ -83,6 +83,6 @@ class CartScreen(tk.Toplevel):
     def back_to_products_screen(self):
         self.withdraw()
         from view.ProductsScreen import ProductsScreen
-        category_id = self.cart_items[0].categoryID
+        category_id = self.cart_items[0].categoryID if len(self.cart_items) > 0 else []
         print(category_id)
         ProductsScreen(category_id)
