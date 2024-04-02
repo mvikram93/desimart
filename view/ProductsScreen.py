@@ -69,10 +69,11 @@ class ProductsScreen(tk.Toplevel):
             self.db_manager.close()  # Close the database connection
 
     def add_to_cart(self, product_id, product_name, price, category_id, qty):
-        cart_item = cart(productname=product_name, productID=product_id, price=price, categoryID=category_id, qty=qty)
-        self.cart_manager.add_to_cart(cart_item)
-            
-        print(f"Added product {product_name} with ID {product_id} to cart with quantity {qty} and price {price}.")
+        qty = int(qty)
+        if int(qty) > 0:
+            cart_item = cart(productname=product_name, productID=product_id, price=price, categoryID=category_id, qty=qty)
+            self.cart_manager.add_to_cart(cart_item)
+            print(f"Added product {product_name} with ID {product_id} to cart with quantity {qty} and price {price}.")
     
     def go_to_cart(self):
         cart_items = self.cart_manager.get_cart_items()
