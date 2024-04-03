@@ -1,6 +1,5 @@
-import mysql.connector
+
 from config import DatabaseManager
-from model.UserModel import User
 from config.DatabaseManager import DatabaseManager
 
 

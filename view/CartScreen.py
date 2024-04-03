@@ -2,7 +2,6 @@
 
 import tkinter as tk
 from PIL import Image, ImageTk
-from model.CartModel import cart
 from config.CartManager import CartManager
 
 class CartScreen(tk.Toplevel):
@@ -14,6 +13,7 @@ class CartScreen(tk.Toplevel):
         self.geometry("890x500+300+200")
         self.resizable(False, False)
         self.configure(bg='white')
+        self.category_id = cart_items[0].categoryID
         # Load and display background image
         self.background_image = Image.open("resources/desi1.png")
         self.background_photo = ImageTk.PhotoImage(self.background_image)
@@ -83,6 +83,4 @@ class CartScreen(tk.Toplevel):
     def back_to_products_screen(self):
         self.withdraw()
         from view.ProductsScreen import ProductsScreen
-        category_id = self.cart_items[0].categoryID if len(self.cart_items) > 0 else []
-        print(category_id)
-        ProductsScreen(category_id)
+        ProductsScreen(self.category_id)
