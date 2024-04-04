@@ -1,8 +1,9 @@
 database:
-  host: 127.0.0.1
+  host: localhost
+  # 127.0.0.1
   port: 3306
   user: root
-  password: ''
+  password: 'YaGnA@123$#$'
   database: desimart
 
 

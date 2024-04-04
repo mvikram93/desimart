@@ -6,6 +6,8 @@ from model.CartModel import cart
 from view.CartScreen import CartScreen
 from config.CartManager import CartManager
 from query.ProductQuery import ProductQuery
+from tkinter import messagebox
+
 class ProductsScreen(tk.Toplevel):
     def __init__(self, category_id):
         super().__init__()
@@ -24,7 +26,7 @@ class ProductsScreen(tk.Toplevel):
         self.background_label.place(x=15, y=5)
         self.back_button=tk.Button(self, text="Back",fg='black',bg='white',font=("Microsoft YaHei UI Light", 13,"bold"),command=self.back_to_Categories_screen,border=0)
         self.back_button.place(x=800,y=130)
-        self.go_to_cart_button = tk.Button(self, text="Go to Cart", command=self.go_to_cart,font=("Microsoft YaHei UI Light", 12),fg='DodgerBlue4',border=0,bg='white')
+        self.go_to_cart_button = tk.Button(self, text="Go to Cart", command=self.go_to_cart,font=("Microsoft YaHei UI Light", 12,"bold"),fg='DodgerBlue4',border=0,bg='white')
         self.go_to_cart_button.place(x=780, y=170)
         # Create frame to hold product details and buttons
         self.product_frame = tk.Frame(self,width=450,height=400,bg='white')
@@ -61,12 +63,19 @@ class ProductsScreen(tk.Toplevel):
             cart_item = cart(productname=product_name, productID=product_id, price=price, categoryID=category_id, qty=qty)
             self.cart_manager.add_to_cart(cart_item)
             print(f"Added product {product_name} with ID {product_id} to cart with quantity {qty} and price {price}.")
+
+        else:
+            messagebox.showerror("qty!", "Please select quantity!")
+
     
     def go_to_cart(self):
         cart_items = self.cart_manager.get_cart_items()
         if cart_items:  # Check if cart is not empty
             self.withdraw()
             CartScreen(cart_items)
+        else:
+            messagebox.showerror("Empty!", "Cart is empty! please add products.")
+
 
     def back_to_Categories_screen(self):
         self.withdraw()
