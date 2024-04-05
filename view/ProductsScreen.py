@@ -14,6 +14,13 @@ class ProductsScreen(tk.Toplevel):
         self.cart_manager = CartManager()
         self.title("Products Screen")
         self.geometry("890x500+300+200")
+        # Center the window on the screen
+        self.update_idletasks()  # Update the window
+        width = self.winfo_width()  # Get the width of the window
+        height = self.winfo_height()  # Get the height of the window
+        x = (self.winfo_screenwidth() // 2) - (width // 2)  # Calculate the x position
+        y = (self.winfo_screenheight() // 2) - (height // 2)  # Calculate the y position
+        self.geometry(f"+{x}+{y}")  # Set the new position
         self.resizable(False, False)
         self.configure(bg='white')
         self.category_id = category_id
@@ -24,10 +31,19 @@ class ProductsScreen(tk.Toplevel):
         self.background_photo = ImageTk.PhotoImage(self.background_image)
         self.background_label = tk.Label(self, image=self.background_photo, bg="white")
         self.background_label.place(x=15, y=5)
+
+        self.add_to_cart_image = Image.open("resources/Add_to_cart.png").resize((420,350))
+        self.add_to_cart_bg = ImageTk.PhotoImage(self.add_to_cart_image)
+        self.add_to_cart_label = tk.Label(self, image=self.add_to_cart_bg, bg="white")
+        self.add_to_cart_label.place(x=500, y=150)
+
+
         self.back_button=tk.Button(self, text="Back",fg='black',bg='white',font=("Microsoft YaHei UI Light", 13,"bold"),command=self.back_to_Categories_screen,border=0)
-        self.back_button.place(x=800,y=130)
-        self.go_to_cart_button = tk.Button(self, text="Go to Cart", command=self.go_to_cart,font=("Microsoft YaHei UI Light", 12,"bold"),fg='DodgerBlue4',border=0,bg='white')
-        self.go_to_cart_button.place(x=780, y=170)
+        self.back_button.place(x=800,y=180)
+        self.cart_img=Image.open("resources/cart.png")
+        self.cart_bg=ImageTk.PhotoImage(self.cart_img)
+        self.go_to_cart_button = tk.Button(self, image=self.cart_bg, command=self.go_to_cart,font=("Microsoft YaHei UI Light", 12,"bold"),fg='DodgerBlue4',border=0,bg='white')
+        self.go_to_cart_button.place(x=800, y=130)
         # Create frame to hold product details and buttons
         self.product_frame = tk.Frame(self,width=450,height=400,bg='white')
         self.product_frame.place(x=70,y=130)

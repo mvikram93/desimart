@@ -14,6 +14,13 @@ class OrderScreen(tk.Toplevel):
         self.cart_manager = CartManager()
         self.title("Products Screen")
         self.geometry("890x500+300+200")
+        # Center the window on the screen
+        self.update_idletasks()  # Update the window
+        width = self.winfo_width()  # Get the width of the window
+        height = self.winfo_height()  # Get the height of the window
+        x = (self.winfo_screenwidth() // 2) - (width // 2)  # Calculate the x position
+        y = (self.winfo_screenheight() // 2) - (height // 2)  # Calculate the y position
+        self.geometry(f"+{x}+{y}")  # Set the new position
         self.resizable(False, False)
         self.configure(bg='white')
         self.category_id = category_id

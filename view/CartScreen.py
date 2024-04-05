@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from PIL import Image, ImageTk
 from config.CartManager import CartManager
 from view.CheckoutScreen import CheckoutScreen
@@ -10,6 +11,13 @@ class CartScreen(tk.Toplevel):
         self.cart_items = cart_items  # Store cart_items passed from ProductsScreen
         self.title("Cart")
         self.geometry("890x500+300+200")
+        # Center the window on the screen
+        self.update_idletasks()  # Update the window
+        width = self.winfo_width()  # Get the width of the window
+        height = self.winfo_height()  # Get the height of the window
+        x = (self.winfo_screenwidth() // 2) - (width // 2)  # Calculate the x position
+        y = (self.winfo_screenheight() // 2) - (height // 2)  # Calculate the y position
+        self.geometry(f"+{x}+{y}")  # Set the new position
         self.resizable(False, False)
         self.configure(bg='white')
         self.category_id = cart_items[0].categoryID
@@ -26,6 +34,9 @@ class CartScreen(tk.Toplevel):
     def display_cart(self):
         self.cart_frame = tk.Frame(self, bg="white")
         self.cart_frame.place(x=50, y=110, width=450, height=300)
+
+        # self.inner_frame = tk.Frame(self, bg="Lightblue3")
+        # self.inner_frame.place(x=50, y=150, width=430, height=270)
 
         self.label_product_name = tk.Label(self.cart_frame, text="Product", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
         self.label_product_name.place(x=20, y=10)
@@ -116,12 +127,11 @@ class CartScreen(tk.Toplevel):
                 # Check if cart is empty
                 if not self.cart_items:
                     empty_cart_label = tk.Label(self.cart_frame, text="Cart is empty!", bg="white", font=("Microsoft YaHei UI Light", 12))
-                    empty_cart_label.place(x=350, y=200)
+                    empty_cart_label.place(x=150, y=120)
 
 
                 label_subtotal = tk.Label(self, text=f"Subtotal : {total} ", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
                 label_subtotal.place(x=100, y=420)
-
     def back_to_products_screen(self):
         self.withdraw()
         from view.ProductsScreen import ProductsScreen

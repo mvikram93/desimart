@@ -18,7 +18,16 @@ class ChangePasswordScreen(tk.Toplevel):
         self.title("Change Password Screen")
         self.configure(bg='white')
         self.geometry("890x500+300+200")
+
+        # Center the window on the screen
+        self.update_idletasks()  # Update the window
+        width = self.winfo_width()  # Get the width of the window
+        height = self.winfo_height()  # Get the height of the window
+        x = (self.winfo_screenwidth() // 2) - (width // 2)  # Calculate the x position
+        y = (self.winfo_screenheight() // 2) - (height // 2)  # Calculate the y position
+        self.geometry(f"+{x}+{y}")  # Set the new position
         self.resizable(False,False)
+        
         self.img=PhotoImage(file='resources\desi1.png')
         self.bg_img=tk.Label(self,image=self.img,bg="white").place(x=15,y=5)
         self.img1=PhotoImage(file='resources\lock.png')

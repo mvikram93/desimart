@@ -10,6 +10,7 @@ from model.UserModel import User
 from view.CategoriesScreen import CategoryScreen
 # from service.OTPGeneratorService import OTPGeneratorService
 
+
 logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',
                     format='%(name)s - %(levelname)s - %(message)s')
 
@@ -20,13 +21,24 @@ class LoginScreen(tk.Tk):
         log = logging.getLogger(self.__class__.__name__)
         log.info("Opened Login Screen")
         self.title("Login Screen")
+        #sets the overall size of the main window
+        self.geometry("890x500+300+200")
+
+        # Center the window on the screen
+        self.update_idletasks()  # Update the window
+        width = self.winfo_width()  # Get the width of the window
+        height = self.winfo_height()  # Get the height of the window
+        x = (self.winfo_screenwidth() // 2) - (width // 2)  # Calculate the x position
+        y = (self.winfo_screenheight() // 2) - (height // 2)  # Calculate the y position
+        self.geometry(f"+{x}+{y}")  # Set the new position
+        
+
         #changing the icon of the window
         self.iconbitmap("resources/user1.ico")
         self.configure(bg='white')
         # self.otpGenerator = OTPGeneratorService()
         
-        #sets the overall size of the main window
-        self.geometry("890x500+300+200")
+
         self.resizable(False,False)
         self.img=PhotoImage(file='resources\desi1.png')
         self.bg_img=tk.Label(self,image=self.img,bg="white").place(x=15,y=5)
