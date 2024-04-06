@@ -39,11 +39,14 @@ class ProductsScreen(tk.Toplevel):
 
 
         self.back_button=tk.Button(self, text="Back",fg='black',bg='white',font=("Microsoft YaHei UI Light", 13,"bold"),command=self.back_to_Categories_screen,border=0)
-        self.back_button.place(x=800,y=180)
+        self.back_button.place(x=15,y=90)
         self.cart_img=Image.open("resources/cart.png")
         self.cart_bg=ImageTk.PhotoImage(self.cart_img)
-        self.go_to_cart_button = tk.Button(self, image=self.cart_bg, command=self.go_to_cart,font=("Microsoft YaHei UI Light", 12,"bold"),fg='DodgerBlue4',border=0,bg='white')
+        self.go_to_cart_button = tk.Button(self, image=self.cart_bg, command=self.go_to_cart,bg='white',border=0)
         self.go_to_cart_button.place(x=800, y=130)
+
+        #font=("Microsoft YaHei UI Light", 12,"bold"),fg='DodgerBlue4',border=0,
+
         # Create frame to hold product details and buttons
         self.product_frame = tk.Frame(self,width=450,height=400,bg='white')
         self.product_frame.place(x=70,y=130)
@@ -91,7 +94,6 @@ class ProductsScreen(tk.Toplevel):
             CartScreen(cart_items)
         else:
             messagebox.showerror("Empty!", "Cart is empty! please add products.")
-
 
     def back_to_Categories_screen(self):
         self.withdraw()

@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from config.CartManager import CartManager
 from view.CheckoutScreen import CheckoutScreen
 
+
 class CartScreen(tk.Toplevel):
     def __init__(self, cart_items):
         super().__init__()
@@ -28,114 +29,159 @@ class CartScreen(tk.Toplevel):
         self.background_label = tk.Label(self, image=self.background_photo, bg="white")
         self.background_label.place(x=15, y=5)
         self.back_button = tk.Button(self, text="Back", fg='black', bg='white', font=("Microsoft YaHei UI Light", 13, "bold"), command=self.back_to_products_screen, border=0)
-        self.back_button.place(x=800, y=130)
+        self.back_button.place(x=800, y=100)
+        #for back to home
+        self.home_img=Image.open("resources/home.png")
+        self.home_bg=ImageTk.PhotoImage(self.home_img)
+        self.home_button=tk.Button(self,image=self.home_bg,command=self.go_to_home,bg='white',border=0)
+        self.home_button.place(x=15,y=90)
+        #creating a label for checkout 
+        self.checkout_image = Image.open("resources/checkout.png")
+        self.checkout_photo = ImageTk.PhotoImage(self.checkout_image)
+        self.checkout_label = tk.Label(self, image=self.checkout_photo, bg="white")
+        self.checkout_label.place(x=470, y=170)
+
+
+
+
         self.display_cart()
 
     def display_cart(self):
         self.cart_frame = tk.Frame(self, bg="white")
-        self.cart_frame.place(x=50, y=110, width=450, height=300)
+        self.cart_frame.place(x=65, y=110, width=450, height=300)
 
-        # self.inner_frame = tk.Frame(self, bg="Lightblue3")
-        # self.inner_frame.place(x=50, y=150, width=430, height=270)
+        # Create a canvas to contain the inner frame
+        self.canvas = tk.Canvas(self.cart_frame, bg="floralwhite")
+        self.canvas.place(x=0, y=0, relwidth=1, relheight=1)
 
-        self.label_product_name = tk.Label(self.cart_frame, text="Product", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
-        self.label_product_name.place(x=20, y=10)
+        # Add a scrollbar
+        scrollbar = ttk.Scrollbar(self.cart_frame, orient=tk.VERTICAL, command=self.canvas.yview)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.label_qty = tk.Label(self.cart_frame, text="Qty", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
-        self.label_qty.place(x=160, y=10)
+        # Link the canvas to the scrollbar
+        self.canvas.configure(yscrollcommand=scrollbar.set)
 
-        label_price = tk.Label(self.cart_frame, text="Price", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
-        label_price.place(x=260, y=10)
+        # Create another frame to hold your widgets inside the canvas
+        self.inner_frame = tk.Frame(self.canvas, bg="floralwhite")
+        self.canvas.create_window((0, 0), window=self.inner_frame, anchor=tk.NW)
 
-        self.cart_widgets = {} # Dictionary to store widgets associated with each item
+        self.label_product_name = tk.Label(self.inner_frame, text="Product", bg="floralwhite", font=("Microsoft YaHei UI Light", 10, "bold"))
+        self.label_product_name.grid(row=0, column=0, padx=10, pady=5)
 
-        self.total=0
+        self.label_qty = tk.Label(self.inner_frame, text="Qty", bg="floralwhite", font=("Microsoft YaHei UI Light", 10, "bold"))
+        self.label_qty.grid(row=0, column=1, padx=10, pady=5)
+
+        label_price = tk.Label(self.inner_frame, text="Price", bg="floralwhite", font=("Microsoft YaHei UI Light", 10, "bold"))
+        label_price.grid(row=0, column=2, padx=10, pady=5)
+
+        self.cart_widgets = {}  # Dictionary to store widgets associated with each item
+
+        self.total = 0
 
         # Display cart items
         for idx, item in enumerate(self.cart_items):
-            y_coordinate = 40 + idx * 30
+            y_coordinate = idx * 30
 
-            self.total+=(item.price)*int(item.qty)
+            self.total += (item.price) * int(item.qty)
 
-            label_product_name = tk.Label(self.cart_frame, text=item.productname, bg="white")
-            label_product_name.place(x=20, y=y_coordinate)
+            label_product_name = tk.Label(self.inner_frame, text=item.productname, bg="floralwhite")
+            label_product_name.grid(row=idx + 1, column=0, padx=10, pady=5)
 
-            label_qty = tk.Label(self.cart_frame, text=item.qty, bg="white")
-            label_qty.place(x=160, y=y_coordinate)
+            label_qty = tk.Label(self.inner_frame, text=item.qty, bg="floralwhite")
+            label_qty.grid(row=idx + 1, column=1, padx=10, pady=5)
 
-            label_price = tk.Label(self.cart_frame, text=f"${item.price}", bg="white")
-            label_price.place(x=260, y=y_coordinate)
+            label_price = tk.Label(self.inner_frame, text=f"${item.price}", bg="floralwhite")
+            label_price.grid(row=idx + 1, column=2, padx=10, pady=5)
 
-            remove_button = tk.Button(self.cart_frame, text="Remove item", command=lambda idx=idx: self.remove_item(idx,self.total))
-            remove_button.place(x=350, y=y_coordinate)
-            
+            remove_button = tk.Button(self.inner_frame, text="Remove item", command=lambda idx=idx: self.remove_item(idx),border=0,bg='floralwhite',fg='dodgerblue4',font=("Microsoft YaHei UI Light", 8, "bold"))
+            remove_button.grid(row=idx + 1, column=3, padx=10, pady=5)
+
             # Store widgets associated with the item
+            self.cart_widgets[idx] = (label_product_name, label_qty, label_price, remove_button)
+
+        # Update the canvas scroll region
+        self.inner_frame.update_idletasks()
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
+        label_subtotal = tk.Label(self, text=f"Subtotal : {self.total} ", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
+        label_subtotal.place(x=100, y=420)
+
+        checkout_button = tk.Button(self, text="Continue to checkout", width=45, bg='DodgerBlue4', fg='floralwhite', border=0, font=("Microsoft YaHei UI Light", 10, "bold"), command=lambda: self.checkout_cart(self.cart_items))
+        checkout_button.place(x=75, y=450)
+
+    def remove_item(self, idx):
+        if idx < len(self.cart_items):
+            removed_item = self.cart_items.pop(idx)  # Remove the item from the cart list
+            self.total -= (removed_item.price) * int(removed_item.qty)  # Update total
+
+            if idx in self.cart_widgets:
+                for widget in self.cart_widgets[idx]:
+                    widget.destroy()  # Remove associated widgets
+                del self.cart_widgets[idx]  # Remove reference from dictionary
+
+            # Update the indices in cart_widgets after the removed item
+            for key in range(idx, len(self.cart_items)):
+                if key + 1 in self.cart_widgets:
+                    # Update the key in cart_widgets to match the new index after removal
+                    self.cart_widgets[key] = self.cart_widgets.pop(key + 1)
+
+            # Check if cart is empty
+            if not self.cart_items:
+                empty_cart_label = tk.Label(self.cart_frame, text="Cart is empty!", bg="floralwhite", font=("Microsoft YaHei UI Light", 12))
+                empty_cart_label.place(x=150, y=120)
+
+            # Redraw the items in the inner frame
+            self.redraw_inner_frame()
+
+            # Update the subtotal label
+            # self.update_subtotal_label()
+
+    def redraw_inner_frame(self):
+        # Clear the existing widgets
+        for widget_list in self.cart_widgets.values():
+            for widget in widget_list:
+                widget.grid_forget()
+
+        # Re-create widgets for each item
+        for idx, item in enumerate(self.cart_items):
+            label_product_name = tk.Label(self.inner_frame, text=item.productname, bg="floralwhite")
+            label_product_name.grid(row=idx + 1, column=0, padx=10, pady=5)
+
+            label_qty = tk.Label(self.inner_frame, text=item.qty, bg="floralwhite")
+            label_qty.grid(row=idx + 1, column=1, padx=10, pady=5)
+
+            label_price = tk.Label(self.inner_frame, text=f"${item.price}", bg="floralwhite")
+            label_price.grid(row=idx + 1, column=2, padx=10, pady=5)
+
+            remove_button = tk.Button(self.inner_frame, text="Remove item", command=lambda idx=idx: self.remove_item(idx),border=0,bg='floralwhite',fg='dodgerblue4',font=("Microsoft YaHei UI Light", 8, "bold"))
+            remove_button.grid(row=idx + 1, column=3, padx=10, pady=5)
+
+            # Update or add entry in cart_widgets
             self.cart_widgets[idx] = (label_product_name, label_qty, label_price, remove_button)
 
         label_subtotal = tk.Label(self, text=f"Subtotal : {self.total} ", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
         label_subtotal.place(x=100, y=420)
 
-        checkout_button = tk.Button(self, text="Continue to checkout", width=45, bg='DodgerBlue4',fg='white',border=0, font=("Microsoft YaHei UI Light", 10,"bold"), command=lambda: self.checkout_cart(self.cart_items))
-        checkout_button.place(x=75, y=450)
-
-    def remove_item(self, idx, total):
-        if idx < len(self.cart_items):
-            removed_item = self.cart_items[idx]  # Get the item to be removed
-            total=total-(removed_item.price)*int(removed_item.qty)
-            self.cart_manager.remove_from_cart(removed_item)  # Use CartManager to remove the item
-            self.cart_items = self.cart_manager.get_cart_items()  # Update cart_items after removal
-
-            # Remove widgets associated with the item
-            if idx in self.cart_widgets:
-                for widget in self.cart_widgets[idx]:
-                    widget.destroy()
-                del self.cart_widgets[idx]
-
-                # Redraw the entire display
-                for widget in self.cart_frame.winfo_children():
-                    widget.destroy()
-
-                # Redraw the header labels
-                self.label_product_name = tk.Label(self.cart_frame, text="Product", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
-                self.label_product_name.place(x=20, y=10)
-
-                self.label_qty = tk.Label(self.cart_frame, text="Qty", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
-                self.label_qty.place(x=160, y=10)
-
-                label_price = tk.Label(self.cart_frame, text="Price", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
-                label_price.place(x=260, y=10)
-
-                # Display cart items
-                for idx, item in enumerate(self.cart_items):
-                    y_coordinate = 40 + idx * 30
-
-                    label_product_name = tk.Label(self.cart_frame, text=item.productname, bg="white")
-                    label_product_name.place(x=20, y=y_coordinate)
-
-                    label_qty = tk.Label(self.cart_frame, text=item.qty, bg="white")
-                    label_qty.place(x=160, y=y_coordinate)
-
-                    label_price = tk.Label(self.cart_frame, text=f"${item.price}", bg="white")
-                    label_price.place(x=260, y=y_coordinate)
-
-                    remove_button = tk.Button(self.cart_frame, text="Remove item", command=lambda idx=idx: self.remove_item(idx,total))
-                    remove_button.place(x=350, y=y_coordinate)
-
-                    # Store widgets associated with the item
-                    self.cart_widgets[idx] = (label_product_name, label_qty, label_price, remove_button)
-
-                # Check if cart is empty
-                if not self.cart_items:
-                    empty_cart_label = tk.Label(self.cart_frame, text="Cart is empty!", bg="white", font=("Microsoft YaHei UI Light", 12))
-                    empty_cart_label.place(x=150, y=120)
+        # Update the canvas scroll region
+        self.inner_frame.update_idletasks()
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
 
-                label_subtotal = tk.Label(self, text=f"Subtotal : {total} ", bg="white", font=("Microsoft YaHei UI Light", 10, "bold"))
-                label_subtotal.place(x=100, y=420)
+    # def update_subtotal_label(self):
+    #     # Update the subtotal label
+    #     self.label_subtotal.config(text=f"Subtotal : {self.total}")
+
+
     def back_to_products_screen(self):
         self.withdraw()
         from view.ProductsScreen import ProductsScreen
         ProductsScreen(self.category_id)
+
+    def go_to_home(self):
+        self.withdraw()
+        from view.CategoriesScreen import CategoryScreen
+        CategoryScreen()
+
 
     def checkout_cart(self, cart_items):
         self.withdraw()
