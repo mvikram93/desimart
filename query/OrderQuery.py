@@ -22,3 +22,8 @@ class OrderQuery:
         query = "Select count(*) from tbl_order"
         return self.db_manager.execute_query(query)
 
+    def place_Items(self, item,orderID,userID):
+        query = "Insert into tbl_order_line(Product_ID,Order_ID,Quantity,Price,total_amount) Values(%s,%s,%s,%s,%s)"
+        self.db_manager.execute_query(query, (item.productID, orderID, item.qty,item.price,userID))
+        return 1
+

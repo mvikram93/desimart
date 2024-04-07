@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 from model.UserModel import User
 
 class CheckoutScreen(tk.Toplevel):
-    def __init__(self, cart_items,user):
+    def __init__(self, cart_items,user,orderID):
             super().__init__()
             self.cart_manager = CartManager()
             self.cart_items = cart_items  # Store cart_items passed from the CartScreen
@@ -21,6 +21,7 @@ class CheckoutScreen(tk.Toplevel):
             self.resizable(False, False)
             self.configure(bg='white')
             self.user = user
+            self.orderID = orderID
             print(self.user.firstname)
             # Display cart items and total for checkout
             # self.display_cart(cart_items, total)
@@ -50,7 +51,7 @@ class CheckoutScreen(tk.Toplevel):
           self.address = tk.Label(self.order_frame, text=f"Address: {self.user.address+','+self.user.city+','+self.user.state+'-'+self.user.zipcode}", bg="white",
                                       font=("Microsoft YaHei UI Light", 10, "bold"))
           self.address.place(x=20, y=130)
-          self.order_id_label = tk.Label(self.order_frame, text=f"Order ID: 567", bg="white",
+          self.order_id_label = tk.Label(self.order_frame, text=f"Order ID: {self.orderID}", bg="white",
                                   font=("Microsoft YaHei UI Light", 10, "bold"))
           self.order_id_label.place(x=20, y=160)
 
