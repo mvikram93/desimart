@@ -37,15 +37,19 @@ class LoginController:
             self.log.error("User does not exists. Please provide a Valid One")
             Exception.raise_Exception("User does not exists. Please provide a Valid One")
             return 0
+        user.userId = logged_In_User[0]
         user.email = logged_In_User[1]
-        user.firstname =logged_In_User[2]
+        user.firstname = logged_In_User[2]
         user.lastname = logged_In_User[3]
         user.password = logged_In_User[4]
+        user.phone = logged_In_User[5]
+        user.address = logged_In_User[6]
+        user.city = logged_In_User[7]
+        user.state = logged_In_User[8]
+        user.zipcode = logged_In_User[9]
         self.log.info(logged_In_User)
         return 1
-        #messagebox.showinfo("Logged In User Details",
-        #                    f"First Name: {user.firstname}\nLast Name: {user.lastname}\nEmail ID: {user.email}\n"
-        #                    f"Password: {user.password}")
+
 
     def changePassword(self, user):
         user_query = UserQuery()

@@ -109,7 +109,7 @@ class LoginScreen(tk.Tk):
                 return
             else:
                 self.withdraw()
-                category_screen = CategoryScreen()
+                category_screen = CategoryScreen(self.user)
         else:
             return
    
@@ -123,7 +123,7 @@ class LoginScreen(tk.Tk):
 
     def on_leave(self,event):
         name = self.email_entry.get()
-        if name=='':
+        if name == '':
             self.email_entry.insert(0,'Email')
     def on_enter_password(self, event):
         self.password_entry.delete(0, 'end')

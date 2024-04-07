@@ -21,7 +21,7 @@ class UserQuery:
             user.zipcode))
         
     def get_user(self, user):
-        query = ("SELECT user_id,email_id,first_name,last_name,password from desimart.tbl_user where email_id=%s and "
+        query = ("SELECT user_id,email_id,first_name,last_name,password,phone_no,address,city,state,zip_code from desimart.tbl_user where email_id=%s and "
                  "password=%s")
         return self.db_manager.execute_query(query, (user.email, user.password))
     
