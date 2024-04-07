@@ -202,10 +202,11 @@ class CartScreen(tk.Toplevel):
         order.Total_Price = total
         order.User_ID = self.user.userId
         order_placed = orderQuery.place_Order(order)
-        if(order_placed ==1 ):
+        for item in cart_items:
+            items_placed = orderQuery.place_Items(item,order.OrderID,order.User_ID)
+        if order_placed == 1 and items_placed == 1:
             self.withdraw()
-            # total = sum(item.price * int(item.qty) for item in cart_items)  # Recalculate the total
-            CheckoutScreen(cart_items, self.user)
+            CheckoutScreen(cart_items, self.user,order.OrderID)
         else:
             messagebox.showerror("Error","Error while processing order. Please try again later")
     def on_mousewheel(self, event):

@@ -47,6 +47,8 @@ CREATE TABLE tbl_order_line (a
     product_id INT,
     order_id INT,
     quantity INT,
+    Price float DEFAULT NULL,
+    total_amount float DEFAULT NULL,
     PRIMARY KEY (product_id, order_id),
     FOREIGN KEY (product_id) REFERENCES tbl_product(product_id),
     FOREIGN KEY (order_id) REFERENCES tbl_Order(order_id)
