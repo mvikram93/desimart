@@ -6,6 +6,7 @@ from view.CheckoutScreen import CheckoutScreen
 from model.OrderModel import OrderModel
 from query.OrderQuery import OrderQuery
 from tkinter import messagebox
+from model.UserModel import User
 
 
 class CartScreen(tk.Toplevel):
@@ -34,7 +35,7 @@ class CartScreen(tk.Toplevel):
         self.back_button = tk.Button(self, text="Back", fg='black', bg='white',
                                      font=("Microsoft YaHei UI Light", 13, "bold"),
                                      command=self.back_to_products_screen, border=0)
-        self.back_button.place(x=800, y=100)
+        self.back_button.place(x=800, y=130)
         # for back to home
         self.home_img = Image.open("resources/home.png")
         self.home_bg = ImageTk.PhotoImage(self.home_img)
@@ -45,6 +46,12 @@ class CartScreen(tk.Toplevel):
         self.checkout_photo = ImageTk.PhotoImage(self.checkout_image)
         self.checkout_label = tk.Label(self, image=self.checkout_photo, bg="white")
         self.checkout_label.place(x=470, y=170)
+
+
+        self.shutdown_button=tk.Button(self,text="Logout",bg="darkgoldenrod2",border=0,fg="black",width=8,command=self.open_loginscreen)
+        self.shutdown_button.place(x=800, y=100)
+        self.purchase_label=tk.Label(self,text=f"No minimum purchase requirement  |  Free shipping & handling  |  Default payment mode: COD",bg="white",fg="black", font=("Microsoft YaHei UI Light", 8))
+        self.purchase_label.place(x=90, y=480)
 
         self.display_cart()
 
@@ -101,8 +108,8 @@ class CartScreen(tk.Toplevel):
             label_price.grid(row=idx + 1, column=2, padx=10, pady=5)
 
             remove_button = tk.Button(self.inner_frame, text="Remove item",
-                                      command=lambda idx=idx: self.remove_item(idx), border=0, bg='floralwhite',
-                                      fg='dodgerblue4', font=("Microsoft YaHei UI Light", 8, "bold"))
+                                      command=lambda idx=idx: self.remove_item(idx), border=0, bg='dodgerblue4',
+                                      fg='white', font=("Microsoft YaHei UI Light", 8, "bold"))
             remove_button.grid(row=idx + 1, column=3, padx=10, pady=5)
 
             # Store widgets associated with the item
@@ -116,10 +123,10 @@ class CartScreen(tk.Toplevel):
                                   font=("Microsoft YaHei UI Light", 10, "bold"))
         label_subtotal.place(x=100, y=420)
 
-        checkout_button = tk.Button(self, text="Continue to checkout", width=45, bg='DodgerBlue4', fg='floralwhite',
+        checkout_button = tk.Button(self, text="Submit order", width=50, bg='DodgerBlue4', fg='floralwhite',
                                     border=0, font=("Microsoft YaHei UI Light", 10, "bold"),
                                     command=lambda: self.checkout_cart(self.cart_items))
-        checkout_button.place(x=75, y=450)
+        checkout_button.place(x=65, y=450)
 
     def remove_item(self, idx):
         if idx < len(self.cart_items):
@@ -167,8 +174,8 @@ class CartScreen(tk.Toplevel):
             label_price.grid(row=idx + 1, column=2, padx=10, pady=5)
 
             remove_button = tk.Button(self.inner_frame, text="Remove item",
-                                      command=lambda idx=idx: self.remove_item(idx), border=0, bg='floralwhite',
-                                      fg='dodgerblue4', font=("Microsoft YaHei UI Light", 8, "bold"))
+                                      command=lambda idx=idx: self.remove_item(idx), border=0, bg='dodgerblue4',
+                                      fg='white', font=("Microsoft YaHei UI Light", 8, "bold"))
             remove_button.grid(row=idx + 1, column=3, padx=10, pady=5)
 
             # Update or add entry in cart_widgets
@@ -185,12 +192,12 @@ class CartScreen(tk.Toplevel):
     def back_to_products_screen(self):
         self.withdraw()
         from view.ProductsScreen import ProductsScreen
-        ProductsScreen(self.category_id)
+        ProductsScreen(self.category_id,self.user)
 
     def go_to_home(self):
         self.withdraw()
         from view.CategoriesScreen import CategoryScreen
-        CategoryScreen()
+        CategoryScreen(self.user)
 
     def checkout_cart(self, cart_items):
         total = sum(item.price * int(item.qty) for item in cart_items)
@@ -202,16 +209,24 @@ class CartScreen(tk.Toplevel):
         order.Total_Price = total
         order.User_ID = self.user.userId
         order_placed = orderQuery.place_Order(order)
-        for item in cart_items:
-            items_placed = orderQuery.place_Items(item,order.OrderID,order.User_ID)
-        if order_placed == 1 and items_placed == 1:
-            self.withdraw()
-            CheckoutScreen(cart_items, self.user,order.OrderID)
+        if not cart_items:  # Check if cart_items is empty
+            messagebox.showerror("Empty Cart", "Your cart is empty. Please add items before submitting the order.")
+        
         else:
-            messagebox.showerror("Error","Error while processing order. Please try again later")
+            for item in cart_items:
+                items_placed = orderQuery.place_Items(item,order.OrderID,order.User_ID)
+            if order_placed == 1 and items_placed == 1:
+                self.withdraw()
+                CheckoutScreen(cart_items, self.user,order.OrderID)
+            else:
+                messagebox.showerror("Error","Error while processing order. Please try again later")
     def on_mousewheel(self, event):
         if event.num == 5 or event.delta == -120:
             self.canvas.yview_scroll(1, "units")
         elif event.num == 4 or event.delta == 120:
             self.canvas.yview_scroll(-1, "units")
+
+    
+    def open_loginscreen(self):
+        self.withdraw()
 

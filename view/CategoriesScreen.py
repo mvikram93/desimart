@@ -26,11 +26,24 @@ class CategoryScreen(tk.Toplevel):
         self.background_photo = ImageTk.PhotoImage(self.background_image)
         self.background_label = tk.Label(self, image=self.background_photo, bg="white")
         self.background_label.place(x=15, y=5)
+        self.welcome_message=tk.Label(self,text="Welcome to Desi Mart!",bg="white",fg="Black", font=("Microsoft YaHei UI Light", 12,"bold"))
+        self.welcome_message.place(x=350, y=110)
+        self.cat_label=tk.Label(self,text="Please select a category to proceed.",bg="white",fg="black", font=("Microsoft YaHei UI Light", 10,"bold"))
+        self.cat_label.place(x=330, y=400)
 
         # Create frame to hold category buttons and images
         self.user = user
         self.category_frame = tk.Frame(self, bg="white")
         self.category_frame.place(relx=0.5, rely=0.7, anchor=S)
+        self.welcome_label=tk.Label(self,text=f"Hi, {self.user.firstname}",bg="white",fg="dodgerblue4", font=("Microsoft YaHei UI Light", 10))
+        self.welcome_label.place(x=780, y=110)
+
+
+        self.shutdown_button=tk.Button(self,text="Logout",bg="darkgoldenrod2",border=0,fg="black",width=8,command=self.open_loginscreen)
+        self.shutdown_button.place(x=820, y=470)
+
+        self.purchase_label=tk.Label(self,text=f"No minimum purchase requirement  |  Free shipping & handling  |  Default payment mode: COD",bg="white",fg="black", font=("Microsoft YaHei UI Light", 8))
+        self.purchase_label.place(x=200, y=480)
         self.CategoryQuery = CategoryQuery()
         self.db_manager = DatabaseManager()  # Create an instance of DatabaseManager
         self.category_images = []  # List to store PhotoImage objects
@@ -63,6 +76,11 @@ class CategoryScreen(tk.Toplevel):
         # print(f"Category ID selected: {category_id}")
         self.withdraw()
         ProductsScreen(category_id,self.user)
+
+    def open_loginscreen(self):
+        self.withdraw()
+
+
 
 # Create the CategoryScreen instance and start the main loop
 # category_screen = CategoryScreen()

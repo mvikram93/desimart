@@ -7,6 +7,7 @@ from view.CartScreen import CartScreen
 from config.CartManager import CartManager
 from query.ProductQuery import ProductQuery
 from tkinter import messagebox
+from model.UserModel import User
 
 class ProductsScreen(tk.Toplevel):
     def __init__(self, category_id,user):
@@ -37,18 +38,22 @@ class ProductsScreen(tk.Toplevel):
         self.add_to_cart_label = tk.Label(self, image=self.add_to_cart_bg, bg="white")
         self.add_to_cart_label.place(x=500, y=150)
 
+        self.shutdown_button=tk.Button(self,text="Logout",bg="darkgoldenrod2",border=0,fg="black",width=8,command=self.open_loginscreen)
+        self.shutdown_button.place(x=15, y=475)
+        self.purchase_label=tk.Label(self,text=f"No minimum purchase requirement  |  Free shipping & handling  |  Default payment mode: COD",bg="white",fg="black", font=("Microsoft YaHei UI Light", 8))
+        self.purchase_label.place(x=200, y=480)
 
         self.back_button=tk.Button(self, text="Back",fg='black',bg='white',font=("Microsoft YaHei UI Light", 13,"bold"),command=self.back_to_Categories_screen,border=0)
         self.back_button.place(x=15,y=90)
         self.cart_img=Image.open("resources/cart.png")
         self.cart_bg=ImageTk.PhotoImage(self.cart_img)
         self.go_to_cart_button = tk.Button(self, image=self.cart_bg, command=self.go_to_cart,bg='white',border=0)
-        self.go_to_cart_button.place(x=800, y=130)
+        self.go_to_cart_button.place(x=800, y=110)
 
         #font=("Microsoft YaHei UI Light", 12,"bold"),fg='DodgerBlue4',border=0,
 
         # Create frame to hold product details and buttons
-        self.product_frame = tk.Frame(self,width=450,height=400,bg='white')
+        self.product_frame = tk.Frame(self,width=450,height=340,bg='white')
         self.product_frame.place(x=70,y=130)
         self.display_products()
 
@@ -98,4 +103,8 @@ class ProductsScreen(tk.Toplevel):
     def back_to_Categories_screen(self):
         self.withdraw()
         from view.CategoriesScreen import CategoryScreen
-        CategoryScreen()
+        CategoryScreen(self.user)
+
+    
+    def open_loginscreen(self):
+        self.withdraw()

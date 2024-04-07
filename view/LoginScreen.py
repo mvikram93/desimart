@@ -53,11 +53,7 @@ class LoginScreen(tk.Tk):
         self.header_label=tk.Label(self.login_frame, text="Sign in",bg='white',font=("Microsoft YaHei UI Light", 23, "bold"),fg='DodgerBlue4')
         self.header_label.place(x=100, y=5)
 
-        # self.email_label = tk.Label(self, text="E-Mail:",bg='slate gray',font=8,fg='Black')
-        # self.email_label.place(relx=0.2, rely=0.3)
-
-
-        self.email_entry = tk.Entry(self.login_frame,width=25,fg='black',border=0,bg="white",font=("Microsoft YaHei UI Light", 11))
+        self.email_entry = tk.Entry(self.login_frame,width=40,fg='black',border=0,bg="white",font=("Microsoft YaHei UI Light", 11))
         self.email_entry.place(x=30, y=80)
         self.email_entry.insert(0,'Email')
 

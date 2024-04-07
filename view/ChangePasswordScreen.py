@@ -4,6 +4,7 @@ import logging
 from controller.LoginController import LoginController as Login
 from model.UserModel import User
 from tkinter import messagebox
+import re # Import the regular expression module
 
 logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',
                     format='%(name)s - %(levelname)s - %(message)s')
@@ -78,12 +79,26 @@ class ChangePasswordScreen(tk.Toplevel):
   
     def submit_form(self):
         login = Login()
-        if not (self.old_password_entry.get() == self.new_password_entry.get()) and (
-                self.confirm_password_entry.get() == self.new_password_entry.get()):
-            self.user.password = self.new_password_entry.get()
-            messagebox.showinfo("Success!", "You have successfully reset your password!")
-        elif self.old_password_entry.get() == self.new_password_entry.get():
-            messagebox.showerror("Error", "Old Password and new Password are the same.")
-        else:
-            messagebox.showinfo("Error", "Password mismatch!")
+        password = self.new_password_entry.get()
+        
+        if self.old_password_entry.get() != "PASSINIT":
+            messagebox.showerror("Error", "Old Password is incorrect.")
+            return
+        
+        if password != self.confirm_password_entry.get():
+            messagebox.showerror("Error", "New Password and Confirm Password do not match.")
+            return
+        
+        # Define the regex pattern to enforce the password criteria
+        pattern = r"^(?=.*[A-Z])(?=.*[!@#$%^&*()-_=+])[a-zA-Z0-9!@#$%^&*()-_=+]{6,}$"
+
+
+        if not re.match(pattern, password):
+            messagebox.showerror("Error", "Password does not meet the criteria.\nCriteria:\nMinimum 6 characters\nAt least one special character\nAt least one capital letter.")
+            return
+
+        self.user.password = password
+        messagebox.showinfo("Success!", "You have successfully reset your password!")
+        self.withdraw()
+        self.login_screen_ref.deiconify()
         login.changePassword(self.user)
