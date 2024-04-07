@@ -40,25 +40,24 @@ class CartScreen(tk.Toplevel):
         self.checkout_photo = ImageTk.PhotoImage(self.checkout_image)
         self.checkout_label = tk.Label(self, image=self.checkout_photo, bg="white")
         self.checkout_label.place(x=470, y=170)
-
-
-
-
         self.display_cart()
 
     def display_cart(self):
         self.cart_frame = tk.Frame(self, bg="white")
         self.cart_frame.place(x=65, y=110, width=450, height=300)
 
-        # Create a canvas to contain the inner frame
+        # Creating a canvas to contain the inner frame
         self.canvas = tk.Canvas(self.cart_frame, bg="floralwhite")
         self.canvas.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # Bind mouse wheel events to the canvas
+        self.canvas.bind_all("<MouseWheel>", self.on_mousewheel)
 
         # Add a scrollbar
         scrollbar = ttk.Scrollbar(self.cart_frame, orient=tk.VERTICAL, command=self.canvas.yview)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        # Link the canvas to the scrollbar
+        # Linking the canvas to the scrollbar
         self.canvas.configure(yscrollcommand=scrollbar.set)
 
         # Create another frame to hold your widgets inside the canvas
@@ -80,8 +79,7 @@ class CartScreen(tk.Toplevel):
 
         # Display cart items
         for idx, item in enumerate(self.cart_items):
-            y_coordinate = idx * 30
-
+            # y_coordinate = idx * 30
             self.total += (item.price) * int(item.qty)
 
             label_product_name = tk.Label(self.inner_frame, text=item.productname, bg="floralwhite")
@@ -93,7 +91,7 @@ class CartScreen(tk.Toplevel):
             label_price = tk.Label(self.inner_frame, text=f"${item.price}", bg="floralwhite")
             label_price.grid(row=idx + 1, column=2, padx=10, pady=5)
 
-            remove_button = tk.Button(self.inner_frame, text="Remove item", command=lambda idx=idx: self.remove_item(idx),border=0,bg='floralwhite',fg='dodgerblue4',font=("Microsoft YaHei UI Light", 8, "bold"))
+            remove_button = tk.Button(self.inner_frame, text="Remove item", command=lambda idx=idx: self.remove_item(idx),border=0,bg='dodgerblue4',fg='white',font=("Microsoft YaHei UI Light", 8, "bold"))
             remove_button.grid(row=idx + 1, column=3, padx=10, pady=5)
 
             # Store widgets associated with the item
@@ -153,7 +151,7 @@ class CartScreen(tk.Toplevel):
             label_price = tk.Label(self.inner_frame, text=f"${item.price}", bg="floralwhite")
             label_price.grid(row=idx + 1, column=2, padx=10, pady=5)
 
-            remove_button = tk.Button(self.inner_frame, text="Remove item", command=lambda idx=idx: self.remove_item(idx),border=0,bg='floralwhite',fg='dodgerblue4',font=("Microsoft YaHei UI Light", 8, "bold"))
+            remove_button = tk.Button(self.inner_frame, text="Remove item", command=lambda idx=idx: self.remove_item(idx),border=0,bg='dodgerblue4',fg='white',font=("Microsoft YaHei UI Light", 8, "bold"))
             remove_button.grid(row=idx + 1, column=3, padx=10, pady=5)
 
             # Update or add entry in cart_widgets
@@ -165,12 +163,6 @@ class CartScreen(tk.Toplevel):
         # Update the canvas scroll region
         self.inner_frame.update_idletasks()
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-
-
-    # def update_subtotal_label(self):
-    #     # Update the subtotal label
-    #     self.label_subtotal.config(text=f"Subtotal : {self.total}")
-
 
     def back_to_products_screen(self):
         self.withdraw()
@@ -187,3 +179,10 @@ class CartScreen(tk.Toplevel):
         self.withdraw()
         # total = sum(item.price * int(item.qty) for item in cart_items)  # Recalculate the total
         CheckoutScreen(cart_items)
+
+    def on_mousewheel(self, event):
+        if event.num == 5 or event.delta == -120:
+            self.canvas.yview_scroll(1, "units")
+        elif event.num == 4 or event.delta == 120:
+            self.canvas.yview_scroll(-1, "units")
+

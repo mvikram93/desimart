@@ -73,7 +73,7 @@ class ProductsScreen(tk.Toplevel):
             spinbox_value = tk.StringVar()  # Create a StringVar to store the Spinbox value
             spinbox = Spinbox(self.product_frame, from_=0, to=10, width=3, textvariable=spinbox_value)  # Pass the StringVar to the Spinbox
             spinbox.place(x=300, y=y_coordinate)
-            add_to_cart_button = tk.Button(self.product_frame, text="Add to Cart", command=lambda prod_id=product[0], prod_name=product[1], price=product[2], category_id=self.category_id, spinbox_value=spinbox_value: self.add_to_cart(prod_id, prod_name, price, category_id, spinbox_value.get()))
+            add_to_cart_button = tk.Button(self.product_frame, text="Add to Cart",border=0,bg='dodgerblue4',fg='white',font=("Microsoft YaHei UI Light", 8, "bold"), command=lambda prod_id=product[0], prod_name=product[1], price=product[2], category_id=self.category_id, spinbox_value=spinbox_value: self.add_to_cart(prod_id, prod_name, price, category_id, spinbox_value.get()))
             add_to_cart_button.place(x=350, y=y_coordinate)
 
     def add_to_cart(self, product_id, product_name, price, category_id, qty):
