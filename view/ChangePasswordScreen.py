@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import *
+from tkinter import PhotoImage
 import logging
 from controller.LoginController import LoginController as Login
 from model.UserModel import User

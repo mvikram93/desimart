@@ -9,7 +9,7 @@ from query.ProductQuery import ProductQuery
 from tkinter import messagebox
 
 class ProductsScreen(tk.Toplevel):
-    def __init__(self, category_id):
+    def __init__(self, category_id,user):
         super().__init__()
         self.cart_manager = CartManager()
         self.title("Products Screen")
@@ -25,7 +25,7 @@ class ProductsScreen(tk.Toplevel):
         self.configure(bg='white')
         self.category_id = category_id
         self.productQuery = ProductQuery()
-
+        self.user = user
         # Load and display background image
         self.background_image = Image.open("resources/desi1.png")
         self.background_photo = ImageTk.PhotoImage(self.background_image)
@@ -91,7 +91,7 @@ class ProductsScreen(tk.Toplevel):
         cart_items = self.cart_manager.get_cart_items()
         if cart_items:  # Check if cart is not empty
             self.withdraw()
-            CartScreen(cart_items)
+            CartScreen(cart_items,self.user)
         else:
             messagebox.showerror("Empty!", "Cart is empty! please add products.")
 

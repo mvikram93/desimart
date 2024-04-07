@@ -7,7 +7,7 @@ from view.ProductsScreen import ProductsScreen
 from query.CategoryQuery import CategoryQuery
 
 class CategoryScreen(tk.Toplevel):
-    def __init__(self):
+    def __init__(self,user):
         super().__init__()
         self.title("Category Screen")
         self.geometry("890x500+300+200")
@@ -28,7 +28,7 @@ class CategoryScreen(tk.Toplevel):
         self.background_label.place(x=15, y=5)
 
         # Create frame to hold category buttons and images
-        self.user = User()
+        self.user = user
         self.category_frame = tk.Frame(self, bg="white")
         self.category_frame.place(relx=0.5, rely=0.7, anchor=S)
         self.CategoryQuery = CategoryQuery()
@@ -62,7 +62,7 @@ class CategoryScreen(tk.Toplevel):
     def category_selected(self, category_id):
         # print(f"Category ID selected: {category_id}")
         self.withdraw()
-        ProductsScreen(category_id)
+        ProductsScreen(category_id,self.user)
 
 # Create the CategoryScreen instance and start the main loop
 # category_screen = CategoryScreen()
