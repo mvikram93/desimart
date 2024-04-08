@@ -5,6 +5,8 @@ from PIL import Image, ImageTk
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from tkinter import filedialog
+from query.OrderQuery import OrderQuery
+from config.DatabaseManager import DatabaseManager
 
 class CheckoutScreen(tk.Toplevel):
     def __init__(self, cart_items,user,orderID):
@@ -24,7 +26,8 @@ class CheckoutScreen(tk.Toplevel):
             self.configure(bg='white')
             self.user = user
             self.orderID = orderID
-            print(self.user.firstname)
+            self.db_manager = DatabaseManager() 
+            self.OrderQuery=OrderQuery()
             # Display cart items and total for checkout
             # self.display_cart(cart_items, total)
             self.background_image = Image.open("resources/desi1.png")
@@ -63,7 +66,7 @@ class CheckoutScreen(tk.Toplevel):
           self.delivery_label=tk.Label(self.order_frame, text="Default payment mode: COD",  bg="floralwhite",fg="dodgerblue4", font=("Microsoft YaHei UI Light", 8))
           self.delivery_label.place(x=20, y=85)
 
-          self.line_label=tk.Label(self.order_frame, text=f"__________________________________________________________", bg="floralwhite", fg="black", font=("Microsoft YaHei UI Light", 10,"bold"))
+          self.line_label=tk.Label(self.order_frame, text="_"*53, bg="floralwhite", fg="black", font=("Microsoft YaHei UI Light", 10,"bold"))
           self.line_label.place(x=20, y=110)
 
           self.name_label = tk.Label(self.order_frame, text=f"Delivering to  {self.user.firstname+' '+self.user.lastname}", bg="floralwhite",
@@ -82,6 +85,8 @@ class CheckoutScreen(tk.Toplevel):
                                   font=("Microsoft YaHei UI Light", 10))
           self.order_id_label.place(x=20, y=235)
 
+     
+
     def go_to_home(self):
         self.withdraw()
         self.cart_items.clear()
@@ -89,47 +94,71 @@ class CheckoutScreen(tk.Toplevel):
         CategoryScreen(self.user)
 
     def print_order(self):
-        # Format the order confirmation details
-        order_details = (
-                f"\nOrder ID: {self.orderID}\n"
-                f"Total: {self.total}\n"
-                f"Free shipping & handling\n"
-                f"Estimated delivery time: 3-4 business days\n"
-                f"___________________________________________\n"
-                f"Delivering to: {self.user.firstname} {self.user.lastname}\n"
-                f"Phone: {self.user.phone}\n"
-                f"Email: {self.user.email}\n"
-                f"Address: {self.user.address}, {self.user.city}, {self.user.state} - {self.user.zipcode}\n"
-
-        )
-
         # Allow the user to select a location to save the PDF
         filename = filedialog.asksaveasfilename(defaultextension=".pdf",
                                                 initialfile=f"order_confirmation_{self.orderID}.pdf",
-                                                  filetypes=[("PDF files", "*.pdf")])
+                                                filetypes=[("PDF files", "*.pdf")])
         if filename:
                 # Create a PDF file
                 c = canvas.Canvas(filename, pagesize=letter)
 
-                c.drawString(100, 750, "Order Confirmation")
-                c.drawString(100, 730, "-" * 50)
- 
-                # Split order_details into lines
-                lines = order_details.split('\n')
+                # Format the order confirmation details
+                order_details = [
+                f"Order ID: {self.orderID}",
+                f"Total: ${self.total}",
+                "Free shipping & handling",
+                "Estimated delivery time: 3-4 business days",
+                "_" * 53,
+                f"Delivering to: {self.user.firstname} {self.user.lastname}",
+                f"Phone: {self.user.phone}",
+                f"Email: {self.user.email}",
+                f"Address: {self.user.address}, {self.user.city}, {self.user.state} - {self.user.zipcode}",
+                "_" * 53,
+                "Products list:"
+                ]
 
-                # Set initial y position for drawing text
-                y_position = 710
-
-                # Draw each line of text at the specified position
-                for line in lines:
-                        c.drawString(100, y_position, line)
+                # Draw order details on the PDF canvas
+                y_position = 700
+                for detail in order_details:
+                        c.drawString(270, 750, "Order Confirmation")
+                        # c.drawString(100, 730, "--" * 53)  
+                        c.drawString(100, y_position, detail)
                         y_position -= 20  # Adjust y position for the next line
 
+                # Fetch order lines from the database
+                order_lines = OrderQuery().get_order_lines(self.orderID)
+                print(order_lines)
+     
+                # Initialize y-coordinate for placing order items
+                y_coordinate = y_position - 15
+
+                # Loop through each order line to retrieve product details and write them to the PDF
+   
+                for order_line in order_lines:
+                        product_id, quantity = order_line
+                        print(product_id)
+
+                        # Fetch product details from the database
+                        product_name, price = self.OrderQuery.get_product_details(product_id)
+                        # print(product_name,price)
+
+                        # # Format the price
+                        # price_str = f"${price}"
+
+                        # Write product details to the PDF canvas
+                        product_details = f"{quantity} x {product_name}: {price}"
+                        c.drawString(100, y_coordinate, product_details)
+                        y_coordinate -= 20 
+
+                # Save the PDF
                 c.save()
+
 
         
     def open_loginscreen(self):
         self.withdraw()
+
+
 
 
 
