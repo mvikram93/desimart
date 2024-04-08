@@ -14,7 +14,7 @@ class EmailService:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-        return
+        return cls._instance
 
     def __init__(self):
         log = logging.getLogger(self.__class__.__name__)
@@ -29,19 +29,19 @@ class EmailService:
             return False
 
     # Function to Send Email
-    def send_Email(toEmail_ID,emailSubject,emailMessageBody):
-        fromAddr = "mvikram.fipply@gmail.com"
+    def send_Email(self,toEmail_ID,orderID):
+        fromAddr = "group4698@gmail.com"
         try:
             msg = MIMEMultipart()
             msg['From'] = fromAddr
             msg['To'] = toEmail_ID
-            msg['Subject'] = emailSubject
-            body = emailMessageBody
+            msg['Subject'] = f'Order Completion Notification: Order #{orderID}'
+            body = "Dear Customer,\n\nWe're pleased to inform you that your order has been successfully completed. Thank you for choosing us!\n\nBest regards,\nThe Team"
             print(f"Email - {msg['To']}")
             msg.attach(MIMEText(body, 'plain'))
             smtp_obj = smtplib.SMTP('smtp.gmail.com', 587)
             smtp_obj.starttls()
-            smtp_obj.login(fromAddr, "nsvkqkqjsyinxjnl ")
+            smtp_obj.login(fromAddr, "fqugmovkklkixxtv")
             text = msg.as_string()
             smtp_obj.sendmail(fromAddr, toEmail_ID, text)
             smtp_obj.quit()
