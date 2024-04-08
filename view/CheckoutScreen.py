@@ -59,9 +59,11 @@ class CheckoutScreen(tk.Toplevel):
         self.print_button = tk.Button(self, text="Print", command=self.print_order, width=10, border=0,
                                       bg='dodgerblue4', fg='white', font=("Microsoft YaHei UI Light", 10, "bold"))
         self.print_button.place(x=350, y=425)
-        self.Email_button = tk.Button(self, text="Email",command=lambda: self.emailObj.send_Email(self.user.email, self.orderID), width=10, border=0, bg='dodgerblue4', fg='white',
-                                      font=("Microsoft YaHei UI Light", 10, "bold"))
+
+        self.Email_button = tk.Button(self, text="Email",command=self.send_email_to_user, width=10, border=0, bg='dodgerblue4', fg='white',
+                                    font=("Microsoft YaHei UI Light", 10, "bold"))
         self.Email_button.place(x=500, y=425)
+
         self.order_frame = tk.Frame(self, bg="floralwhite")
         self.order_frame.place(x=250, y=150, width=470, height=265)
         self.total_label = tk.Label(self.order_frame, text=f"You pay: {self.total}", bg="floralwhite",
@@ -167,6 +169,13 @@ class CheckoutScreen(tk.Toplevel):
 
                 # Save the PDF
                 c.save()
+                
+    def send_email_to_user(self):
+        email_sent = self.emailObj.send_Email(self.user.email, self.orderID)
+        if email_sent:
+            tk.messagebox.showinfo("Email Sent", f"Sent email to {self.user.email}")
+        else:
+            tk.messagebox.showerror("Email Error", "Failed to send email")       
 
 
 

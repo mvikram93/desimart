@@ -41,7 +41,9 @@ class EmailService:
                 body = "Dear Customer,\n\nWe're pleased to inform you that your order has been successfully placed. Thank you for choosing us!\n\nBest regards,\nThe Team"
                 print(f"Email - {msg['To']}")
                 msg.attach(MIMEText(body, 'plain'))
+                #simple mail transfer protocol, port: 587
                 smtp_obj = smtplib.SMTP('smtp.gmail.com', 587)
+                #transport layer security
                 smtp_obj.starttls()
                 smtp_obj.login(fromAddr, "fqugmovkklkixxtv")
                 text = msg.as_string()
@@ -49,5 +51,5 @@ class EmailService:
                 smtp_obj.quit()
             except:
                 raise Exception("Cannot send the email")
-                return 1
-        return 0
+                return 0
+        return 1
