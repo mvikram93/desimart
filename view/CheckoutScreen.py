@@ -114,31 +114,31 @@ class CheckoutScreen(tk.Toplevel):
                                                 initialfile=f"order_confirmation_{self.orderID}.pdf",
                                                 filetypes=[("PDF files", "*.pdf")])
         if filename:
-            # Create a PDF file
-            c = canvas.Canvas(filename, pagesize=letter)
+                # Create a PDF file
+                c = canvas.Canvas(filename, pagesize=letter)
 
-        # Format the order confirmation details
-        order_details = [
-        f"Order ID: {self.orderID}",
-        f"Total: ${self.total}",
-        "Free shipping & handling",
-        "Estimated delivery time: 3-4 business days",
-        "_" * 53,
-        f"Delivering to: {self.user.firstname} {self.user.lastname}",
-        f"Phone: {self.user.phone}",
-        f"Email: {self.user.email}",
-        f"Address: {self.user.address}, {self.user.city}, {self.user.state} - {self.user.zipcode}",
-        "_" * 53,
-        "Products list:"
-        ]
+                # Format the order confirmation details
+                order_details = [
+                f"Order ID: {self.orderID}",
+                f"Total: ${self.total}",
+                "Free shipping & handling",
+                "Estimated delivery time: 3-4 business days",
+                "_" * 53,
+                f"Delivering to: {self.user.firstname} {self.user.lastname}",
+                f"Phone: {self.user.phone}",
+                f"Email: {self.user.email}",
+                f"Address: {self.user.address}, {self.user.city}, {self.user.state} - {self.user.zipcode}",
+                "_" * 53,
+                "Products list:"
+                ]
 
-        # Draw order details on the PDF canvas
-        y_position = 700
-        for detail in order_details:
-                c.drawString(270, 750, "Order Confirmation")
-                # c.drawString(100, 730, "--" * 53)  
-                c.drawString(100, y_position, detail)
-                y_position -= 20  # Adjust y position for the next line
+                # Draw order details on the PDF canvas
+                y_position = 700
+                for detail in order_details:
+                        c.drawString(270, 750, "Order Confirmation")
+                        # c.drawString(100, 730, "--" * 53)  
+                        c.drawString(100, y_position, detail)
+                        y_position -= 20  # Adjust y position for the next line
 
                 # Fetch order lines from the database
                 order_lines = OrderQuery().get_order_lines(self.orderID)
@@ -167,6 +167,7 @@ class CheckoutScreen(tk.Toplevel):
 
                 # Save the PDF
                 c.save()
+
 
 
         
