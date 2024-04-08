@@ -11,6 +11,7 @@ logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w',
 
 
 class RegistrationScreen(tk.Toplevel):
+
     def __init__(self,login_screen_ref):
         super().__init__()
         self.deiconify()
@@ -34,7 +35,8 @@ class RegistrationScreen(tk.Toplevel):
         self.bg_img=tk.Label(self,image=self.img,bg="white").place(x=15,y=0)
         self.image=PhotoImage(file='resources/desimart.png').subsample(1,1)
         self.bg_image=tk.Label(self,image=self.image,bg="white").place(x=40,y=90)
-
+        self.validate_zipcode = self.register(self.validate_zipcodefn)
+        self.validate_phoneNo = self.register(self.validate_phoneNofn)
         self.user = User()
         self.registration_frame = tk.Frame(self, width=500,height=380,bg='white')
         self.registration_frame.place(x=400,y=100)
@@ -63,7 +65,7 @@ class RegistrationScreen(tk.Toplevel):
         self.phone_label = tk.Label(self.registration_frame, text="Phone Number:",bg='white',font=("Microsoft YaHei UI Light", 9),fg='black')
         self.phone_label.place(x=30,y=230)
 
-        self.phone_entry = tk.Entry(self.registration_frame,border='1',width=25,bg='ghost white',font=("Microsoft YaHei UI Light", 9),fg='black')
+        self.phone_entry = tk.Entry(self.registration_frame,validate="key",validatecommand=(self.validate_phoneNo,"%P"),border='1',width=25,bg='ghost white',font=("Microsoft YaHei UI Light", 9),fg='black')
         self.phone_entry.place(x=30,y=255)
 
         self.address_label = tk.Label(self.registration_frame, text="Address:",bg='white',font=("Microsoft YaHei UI Light", 9),fg='black')
@@ -87,7 +89,7 @@ class RegistrationScreen(tk.Toplevel):
         self.address_zipcode_label = tk.Label(self.registration_frame, text="Zipcode:",bg='white',font=("Microsoft YaHei UI Light", 9),fg='black')
         self.address_zipcode_label.place(x=250,y=230)
 
-        self.address_zipcode_entry = tk.Entry(self.registration_frame,border='1',width=25,bg='ghost white',font=("Microsoft YaHei UI Light", 9),fg='black')
+        self.address_zipcode_entry = tk.Entry(self.registration_frame,validate="key",validatecommand=(self.validate_zipcode, '%P'),border='1',width=25,bg='ghost white',font=("Microsoft YaHei UI Light", 9),fg='black')
         self.address_zipcode_entry.place(x=250,y=255)
 
         self.submit_button = tk.Button(self.registration_frame, text="Submit", command=self.submit_form,width=12,pady=5,bg='DodgerBlue4',fg='white',border=0)
@@ -101,6 +103,16 @@ class RegistrationScreen(tk.Toplevel):
         # Add a Exit button to the bottom frame
         self.quit_button = tk.Button(self.registration_frame, text="Exit", command=self.destroy,width=12,pady=5,bg='DodgerBlue4',fg='white',border=0)
         self.quit_button.place(x=300,y=300)
+
+    def validate_zipcodefn(self,zipcode):
+        if zipcode.isdigit():
+            return len(zipcode) <= 5
+        return False
+
+    def validate_phoneNofn(self,phoneNO):
+        if phoneNO.isdigit():
+            return len(phoneNO) <= 10
+        return False
 
     def open_login_screen(self):
         self.withdraw()
