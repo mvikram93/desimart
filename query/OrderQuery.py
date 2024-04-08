@@ -26,4 +26,14 @@ class OrderQuery:
         query = "Insert into tbl_order_line(Product_ID,Order_ID,Quantity,Price,total_amount) Values(%s,%s,%s,%s,%s)"
         self.db_manager.execute_query(query, (item.productID, orderID, item.qty,item.price,userID))
         return 1
+    
+    def get_order_lines(self, order_id):
+        query = "SELECT Product_ID, Quantity FROM tbl_order_line WHERE Order_ID = %s"
+        return self.db_manager.execute_query(query, params=(order_id,), fetchall=True)
+
+    def get_product_details(self, product_id):
+        query = "SELECT Product_Name, Price FROM tbl_product WHERE Product_ID = %s"
+        params = (product_id,)
+        return self.db_manager.execute_query(query, params=params, fetchall=False)
+  
 

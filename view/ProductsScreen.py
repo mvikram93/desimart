@@ -71,7 +71,7 @@ class ProductsScreen(tk.Toplevel):
             y_coordinate = 50 + idx * 30
             product_label = tk.Label(self.product_frame, text=f"{product[1]}", bg="white")
             product_label.place(x=20, y=y_coordinate)
-            product_label = tk.Label(self.product_frame, text=f"{product[2]}", bg="white")
+            product_label = tk.Label(self.product_frame, text=f"${product[2]}", bg="white")
             product_label.place(x=140, y=y_coordinate)
             product_label = tk.Label(self.product_frame, text=f"{product[3]}", bg="white")
             product_label.place(x=240, y=y_coordinate)
@@ -86,7 +86,7 @@ class ProductsScreen(tk.Toplevel):
         if int(qty) > 0:
             cart_item = cart(productname=product_name, productID=product_id, price=price, categoryID=category_id, qty=qty)
             self.cart_manager.add_to_cart(cart_item)
-            print(f"Added product {product_name} with ID {product_id} to cart with quantity {qty} and price {price}.")
+            print(f"Added product {product_name} with ID {product_id} to cart with quantity {qty} and price ${price}.")
 
         else:
             messagebox.showerror("qty!", "Please select quantity!")
