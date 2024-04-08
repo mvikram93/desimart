@@ -82,6 +82,7 @@ class ChangePasswordScreen(tk.Toplevel):
         password = self.new_password_entry.get()
         
         if self.old_password_entry.get() != "PASSINIT":
+        # Your code here if the entered password is not "PASSINIT" or "passinit"
             messagebox.showerror("Error", "Old Password is incorrect.")
             return
         

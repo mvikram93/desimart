@@ -38,7 +38,7 @@ class EmailService:
                 msg['From'] = fromAddr
                 msg['To'] = toAddr
                 msg['Subject'] = f'Order Completion Notification: Order #{orderID}'
-                body = "Dear Customer,\n\nWe're pleased to inform you that your order has been successfully completed. Thank you for choosing us!\n\nBest regards,\nThe Team"
+                body = "Dear Customer,\n\nWe're pleased to inform you that your order has been successfully placed. Thank you for choosing us!\n\nBest regards,\nThe Team"
                 print(f"Email - {msg['To']}")
                 msg.attach(MIMEText(body, 'plain'))
                 smtp_obj = smtplib.SMTP('smtp.gmail.com', 587)
