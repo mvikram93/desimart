@@ -37,7 +37,7 @@ class EmailService:
                 msg = MIMEMultipart()
                 msg['From'] = fromAddr
                 msg['To'] = toAddr
-                msg['Subject'] = f'Order Completion Notification: Order #{orderID}'
+                msg['Subject'] = f'Order successfully placed: Order #{orderID}'
                 body = "Dear Customer,\n\nWe're pleased to inform you that your order has been successfully completed. Thank you for choosing us!\n\nBest regards,\nThe Team"
                 print(f"Email - {msg['To']}")
                 msg.attach(MIMEText(body, 'plain'))
