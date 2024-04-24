@@ -34,7 +34,7 @@ class EmailService:
         for toAddr in toAddrs:
             fromAddr = "group4698@gmail.com"
             try:
-                msg = MIMEMultipart()
+                msg = MIMEMultipart() #This creates a MIME message object for composing the email.
                 msg['From'] = fromAddr
                 msg['To'] = toAddr
                 msg['Subject'] = f'Order successfully placed: Order #{orderID}'
@@ -42,13 +42,13 @@ class EmailService:
                 print(f"Email - {msg['To']}")
                 msg.attach(MIMEText(body, 'plain'))
                 #simple mail transfer protocol, port: 587
-                smtp_obj = smtplib.SMTP('smtp.gmail.com', 587)
+                smtp_obj = smtplib.SMTP('smtp.gmail.com', 587) # This creates an SMTP object for connecting to Gmail's SMTP server.
                 #transport layer security
-                smtp_obj.starttls()
-                smtp_obj.login(fromAddr, "fqugmovkklkixxtv")
+                smtp_obj.starttls()#This starts a TLS encrypted connection with the SMTP server.
+                smtp_obj.login(fromAddr, "fqugmovkklkixxtv") #This logs in to the SMTP server using the sender's email address and password.
                 text = msg.as_string()
                 smtp_obj.sendmail(fromAddr, toEmail_ID, text)
-                smtp_obj.quit()
+                smtp_obj.quit() #This quits the SMTP server connection.
             except:
                 raise Exception("Cannot send the email")
                 return 0

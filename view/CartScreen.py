@@ -59,7 +59,7 @@ class CartScreen(tk.Toplevel):
         self.cart_frame = tk.Frame(self, bg="white")
         self.cart_frame.place(x=65, y=110, width=450, height=300)
 
-        # Creating a canvas to contain the inner frame
+        # Creating a canvas to contain the frame
         self.canvas = tk.Canvas(self.cart_frame, bg="floralwhite")
         self.canvas.place(x=0, y=0, relwidth=1, relheight=1)
 

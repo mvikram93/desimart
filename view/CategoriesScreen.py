@@ -79,9 +79,3 @@ class CategoryScreen(tk.Toplevel):
 
     def open_loginscreen(self):
         self.withdraw()
-
-
-
-# Create the CategoryScreen instance and start the main loop
-# category_screen = CategoryScreen()
-# category_screen.mainloop()

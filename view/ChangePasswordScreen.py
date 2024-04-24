@@ -82,7 +82,6 @@ class ChangePasswordScreen(tk.Toplevel):
         password = self.new_password_entry.get()
         
         if self.old_password_entry.get() != "PASSINIT":
-        # Your code here if the entered password is not "PASSINIT" or "passinit"
             messagebox.showerror("Error", "Old Password is incorrect.")
             return
         
@@ -90,7 +89,7 @@ class ChangePasswordScreen(tk.Toplevel):
             messagebox.showerror("Error", "New Password and Confirm Password do not match.")
             return
         
-        # Define the regex pattern to enforce the password criteria
+        # Defining the regex pattern to enforce the password criteria
         pattern = r"^(?=.*[A-Z])(?=.*[!@#$%^&*()-_=+])[a-zA-Z0-9!@#$%^&*()-_=+]{6,}$"
 
 

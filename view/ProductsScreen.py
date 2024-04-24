@@ -50,8 +50,6 @@ class ProductsScreen(tk.Toplevel):
         self.go_to_cart_button = tk.Button(self, image=self.cart_bg, command=self.go_to_cart,bg='white',border=0)
         self.go_to_cart_button.place(x=800, y=110)
 
-        #font=("Microsoft YaHei UI Light", 12,"bold"),fg='DodgerBlue4',border=0,
-
         # Create frame to hold product details and buttons
         self.product_frame = tk.Frame(self,width=450,height=340,bg='white')
         self.product_frame.place(x=70,y=130)

@@ -144,8 +144,7 @@ class CheckoutScreen(tk.Toplevel):
 
                 # Fetch order lines from the database
                 order_lines = OrderQuery().get_order_lines(self.orderID)
-                print(order_lines)
-     
+
                 # Initialize y-coordinate for placing order items
                 y_coordinate = y_position - 15
 
@@ -153,14 +152,8 @@ class CheckoutScreen(tk.Toplevel):
    
                 for order_line in order_lines:
                         product_id, quantity = order_line
-                        print(product_id)
-
                         # Fetch product details from the database
                         product_name, price = self.OrderQuery.get_product_details(product_id)
-                        # print(product_name,price)
-
-                        # # Format the price
-                        # price_str = f"${price}"
 
                         # Write product details to the PDF canvas
                         product_details = f"{quantity} x {product_name}: {price}"
@@ -169,7 +162,7 @@ class CheckoutScreen(tk.Toplevel):
 
                 # Save the PDF
                 c.save()
-                
+
     def send_email_to_user(self):
         email_sent = self.emailObj.send_Email(self.user.email, self.orderID)
         if email_sent:

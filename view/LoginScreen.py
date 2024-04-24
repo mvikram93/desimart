@@ -87,10 +87,6 @@ class LoginScreen(tk.Tk):
         self.greet_button = tk.Button(self.login_frame, text='Sign up', command=self.open_registration_screen,border=0,bg='white',cursor='hand2',fg='DodgerBlue4')
         self.greet_button.place(x=215,y=270)
 
-        # # Add a exit button
-
-        # self.exit_button = tk.Button(self, text='Exit', command=self.destroy,bg='slate gray',bd=0)
-        # self.exit_button.place(relx=0.5,rely=0.5)
 
     def submit_form(self):
         login = Login()
